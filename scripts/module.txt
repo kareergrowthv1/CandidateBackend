@@ -1,0 +1,292 @@
+JAVA COURSE STRUCTURE
+=====================
+
+1. HelloWorld (Introduction)
+   - Introduction
+   - Hello Java File
+   - Print Statements
+   - Commenting Code
+   - Semicolons and Whitespace
+   - Compilation: Catching Errors
+   - Compilation: Creating Executables
+   - Java Review: Putting It All Together
+
+------------------------------------------------
+
+2. Variables
+   - Introduction to Variables
+   - Declaring Variables
+   - Primitive Data Types
+   - Variable Initialization
+   - Updating Variables
+   - Naming Conventions
+
+------------------------------------------------
+
+3. Operators
+   - Introduction to Operators
+   - Arithmetic Operators
+   - Relational Operators
+   - Logical Operators
+   - Assignment Operators
+   - Unary Operators
+   - Ternary Operator
+
+------------------------------------------------
+
+4. Conditional Statements
+   - Introduction to Conditions
+   - if Statement
+   - if-else Statement
+   - else-if Ladder
+   - Nested if
+   - switch Statement
+
+------------------------------------------------
+
+5. Loop Statements
+   - Introduction to Loops
+   - while Loop
+   - do-while Loop
+   - for Loop
+   - Nested Loops
+   - break Statement
+   - continue Statement
+
+------------------------------------------------
+
+6. Arrays
+   - Introduction to Arrays
+   - Declaring Arrays
+   - Initializing Arrays
+   - Accessing Array Elements
+   - Looping Through Arrays
+   - Multidimensional Arrays
+
+------------------------------------------------
+
+7. Methods
+   - Introduction to Methods
+   - Method Declaration
+   - Method Parameters
+   - Method Return Types
+   - Calling Methods
+   - Recursive Methods
+
+------------------------------------------------
+
+8. Class and Object
+   - Introduction to Classes
+   - Creating Classes
+   - Creating Objects
+   - Accessing Object Members
+   - Object Memory Concept
+
+------------------------------------------------
+
+9. Static
+   - Static Variables
+   - Static Methods
+   - Static Blocks
+   - Static vs Non Static
+
+------------------------------------------------
+
+10. Non-Static and JVM Memory
+    - Instance Variables
+    - Instance Methods
+    - Stack Memory
+    - Heap Memory
+    - Method Area
+    - JVM Memory Structure
+
+------------------------------------------------
+
+11. Blocks
+    - Static Blocks
+    - Instance Blocks
+    - Local Blocks
+    - Execution Order of Blocks
+
+------------------------------------------------
+
+12. String Functions
+    - Introduction to String
+    - String Methods
+    - String Comparison
+    - String Concatenation
+    - String Immutability
+
+------------------------------------------------
+
+13. Constructor
+    - Introduction to Constructor
+    - Default Constructor
+    - Parameterized Constructor
+    - Constructor Overloading
+    - Constructor Chaining
+
+------------------------------------------------
+
+14. Pass by Value
+    - Concept of Pass by Value
+    - Passing Primitive Data Types
+    - Memory Behavior
+
+------------------------------------------------
+
+15. Pass by Reference
+    - Object Reference Passing
+    - Behavior of Objects in Methods
+    - Reference Handling
+
+------------------------------------------------
+
+16. Composition
+    - Has-A Relationship
+    - Creating Object References
+    - Code Reusability with Composition
+
+------------------------------------------------
+
+17. Inheritance
+    - Introduction to Inheritance
+    - Types of Inheritance
+    - Single Inheritance
+    - Multilevel Inheritance
+    - Hierarchical Inheritance
+    - super Keyword
+
+------------------------------------------------
+
+18. Method Overloading
+    - Introduction to Overloading
+    - Changing Parameters
+    - Method Signature
+    - Compile Time Polymorphism
+
+------------------------------------------------
+
+19. Method Overriding
+    - Introduction to Overriding
+    - Runtime Polymorphism
+    - Overriding Rules
+    - super Method Call
+
+------------------------------------------------
+
+20. Typecasting
+    - Introduction to Typecasting
+    - Upcasting
+    - Downcasting
+    - instanceof Operator
+
+------------------------------------------------
+
+21. Polymorphism
+    - Introduction to Polymorphism
+    - Compile Time Polymorphism
+    - Runtime Polymorphism
+    - Practical Examples
+
+------------------------------------------------
+
+22. Abstract Class
+    - Introduction to Abstract Classes
+    - Abstract Methods
+    - Implementing Abstract Classes
+    - Abstract vs Normal Classes
+
+------------------------------------------------
+
+23. Interface
+    - Introduction to Interface
+    - Implementing Interfaces
+    - Multiple Inheritance using Interface
+    - Default and Static Methods
+
+------------------------------------------------
+
+24. Package
+    - Introduction to Packages
+    - Creating Packages
+    - Importing Packages
+    - Built-in Packages
+    - User Defined Packages
+
+------------------------------------------------
+
+25. Access Specifiers
+    - Private
+    - Default
+    - Protected
+    - Public
+
+------------------------------------------------
+
+26. Encapsulation
+    - Data Hiding
+    - Getter Methods
+    - Setter Methods
+    - Encapsulation Best Practices
+
+------------------------------------------------
+
+27. Collection
+    - Introduction to Collection Framework
+    - List Interface
+    - Set Interface
+    - Map Interface
+    - ArrayList
+    - LinkedList
+    - HashSet
+    - HashMap
+
+------------------------------------------------
+
+28. Object Class
+    - Introduction to Object Class
+    - toString()
+    - equals()
+    - hashCode()
+    - clone()
+
+------------------------------------------------
+
+29. String Class
+    - String Pool
+    - Immutable Strings
+    - StringBuilder
+    - StringBuffer
+    - String Methods
+
+------------------------------------------------
+
+30. Exception Handling
+    - Introduction to Exceptions
+    - try-catch
+    - finally
+    - throw
+    - throws
+    - Custom Exceptions
+
+------------------------------------------------
+
+31. Threads
+    - Introduction to Multithreading
+    - Thread Class
+    - Runnable Interface
+    - Thread Lifecycle
+    - Synchronization
+
+------------------------------------------------
+
+32. File Handling
+    - Introduction to File Handling
+    - File Class
+    - FileReader
+    - FileWriter
+    - BufferedReader
+    - BufferedWriter
+    - Reading Files
+    - Writing Files.

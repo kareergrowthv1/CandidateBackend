@@ -1,0 +1,954 @@
+[
+  {
+    "_id": "69b19b995ec931fca4b0dfdf",
+    "slug": "java",
+    "name": "Learn Java",
+    "description": "Learn to code in Java — a robust programming language used to create software, web and mobile apps, and more.",
+    "projectsCount": 14,
+    "lessonsCount": 16,
+    "level": "Beginner friendly",
+    "migratedAt": "2026-03-11T17:22:43.377Z",
+    "modules": [
+      {
+        "_id": "69b19b995ec931fca4b0dfe6",
+        "courseId": "69b19b995ec931fca4b0dfdf",
+        "order": 1,
+        "title": "Hello World",
+        "description": "Welcome to the world of Java programming! Java is a popular object-oriented programming language that is used in many different industries.",
+        "items": [
+          {
+            "type": "lesson",
+            "title": "Hello World"
+          },
+          {
+            "type": "article",
+            "title": "Java Program Structure"
+          },
+          {
+            "type": "quiz",
+            "title": "Hello World"
+          },
+          {
+            "type": "project",
+            "title": "Planting a Tree"
+          },
+          {
+            "type": "article",
+            "title": "What Is an IDE?"
+          }
+        ],
+        "lessonsCount": 1,
+        "articlesCount": 2,
+        "quizzesCount": 1,
+        "projectsCount": 1,
+        "videosCount": 0,
+        "conceptsCount": 5,
+        "lessons": [
+          {
+            "_id": "69b1a024d064336ff3588581",
+            "moduleId": "69b19b995ec931fca4b0dfe6",
+            "courseId": "69b19b995ec931fca4b0dfdf",
+            "order": 1,
+            "type": "lesson",
+            "title": "Introduction to Java",
+            "duration": "3 min",
+            "language": "java",
+            "starterCode": "public class HelloWorld {\n  public static void main(String[] args) {\n    System.out.println(\"Hello World!\");\n  }\n}",
+            "content": [
+              {
+                "type": "label",
+                "value": "HELLO WORLD"
+              },
+              {
+                "type": "heading",
+                "value": "Introduction to Java"
+              },
+              {
+                "type": "duration",
+                "value": "3 min"
+              },
+              {
+                "type": "text",
+                "value": "Welcome to the world of Java programming!"
+              },
+              {
+                "type": "text",
+                "value": "Programming languages enable humans to write instructions that a computer can perform. With precise instructions, computers coordinate applications and systems that run the modern world."
+              },
+              {
+                "type": "text",
+                "value": "Sun Microsystems released the Java programming language in 1995. Java is known for being simple, portable, secure, and robust. Though it was released over twenty years ago, Java remains one of the most popular programming languages today."
+              },
+              {
+                "type": "text",
+                "value": "One reason people love Java is the Java Virtual Machine, which ensures the same Java code can be run on different operating systems and platforms. Sun Microsystems' slogan for Java was \"write once, run everywhere\"."
+              },
+              {
+                "type": "image",
+                "value": "/assets/java_jvm_diagram.png",
+                "caption": "Java Virtual Machine running Java on three different platforms"
+              },
+              {
+                "type": "text",
+                "value": "Programming languages are composed of syntax, the specific instructions which Java understands. We write syntax in files to create programs, which are executed by the computer to perform the desired task."
+              },
+              {
+                "type": "text",
+                "value": "Let's start with the universal greeting for a programming language. We'll explore the syntax in the next exercise."
+              },
+              {
+                "type": "section_heading",
+                "value": "Instructions"
+              },
+              {
+                "type": "checkpoint",
+                "index": 1,
+                "value": "You're looking at a computer program written in Java.\n\nRun the code in the text editor to see what is printed to the screen."
+              },
+              {
+                "type": "section_heading",
+                "value": "Concept Review"
+              },
+              {
+                "type": "text",
+                "value": "Want to quickly review some of the concepts you've been learning? Take a look at this material's cheatsheet!"
+              },
+              {
+                "type": "section_heading",
+                "value": "Community Support"
+              },
+              {
+                "type": "text",
+                "value": "Still have questions? Get help from the community."
+              }
+            ]
+          },
+          {
+            "_id": "69b1a024d064336ff3588582",
+            "moduleId": "69b19b995ec931fca4b0dfe6",
+            "courseId": "69b19b995ec931fca4b0dfdf",
+            "order": 2,
+            "type": "article",
+            "title": "Java Program Structure",
+            "duration": "5 min",
+            "language": "java",
+            "starterCode": "public class HelloWorld {\n  public static void main(String[] args) {\n    // Your code here\n  }\n}",
+            "content": [
+              {
+                "type": "label",
+                "value": "HELLO WORLD"
+              },
+              {
+                "type": "heading",
+                "value": "Java Program Structure"
+              },
+              {
+                "type": "duration",
+                "value": "5 min"
+              },
+              {
+                "type": "text",
+                "value": "Every Java program starts with a class. The class is a blueprint for creating objects and contains all the code for the program."
+              },
+              {
+                "type": "text",
+                "value": "Inside the class, we define the main method. This is the entry point of any Java application. When you run a Java program, the JVM looks for this method and starts executing from here."
+              },
+              {
+                "type": "code_block",
+                "language": "java",
+                "value": "public class MyProgram {\n  public static void main(String[] args) {\n    // Code executes here\n  }\n}"
+              },
+              {
+                "type": "text",
+                "value": "The keyword public means the class or method is accessible from anywhere. The keyword static means the method belongs to the class itself, not an instance of the class. The keyword void means the method does not return any value."
+              },
+              {
+                "type": "text",
+                "value": "String[] args is a parameter that passes command-line arguments into the program. You can ignore it for now."
+              },
+              {
+                "type": "section_heading",
+                "value": "Key Takeaways"
+              },
+              {
+                "type": "checkpoint",
+                "index": 1,
+                "value": "Every Java program has at least one class."
+              },
+              {
+                "type": "checkpoint",
+                "index": 2,
+                "value": "The main method is the entry point of every Java program."
+              },
+              {
+                "type": "checkpoint",
+                "index": 3,
+                "value": "public, static, and void are important Java keywords."
+              }
+            ]
+          },
+          {
+            "_id": "69b1a024d064336ff3588583",
+            "moduleId": "69b19b995ec931fca4b0dfe6",
+            "courseId": "69b19b995ec931fca4b0dfdf",
+            "order": 3,
+            "type": "quiz",
+            "title": "Hello World Quiz",
+            "duration": "5 min",
+            "language": "java",
+            "starterCode": "public class HelloWorld {\n  public static void main(String[] args) {\n    // Try the quiz!\n  }\n}",
+            "content": [
+              {
+                "type": "label",
+                "value": "HELLO WORLD"
+              },
+              {
+                "type": "heading",
+                "value": "Hello World Quiz"
+              },
+              {
+                "type": "duration",
+                "value": "5 min"
+              },
+              {
+                "type": "text",
+                "value": "Test your knowledge of the Hello World lesson with this quick quiz."
+              },
+              {
+                "type": "section_heading",
+                "value": "Question 1"
+              },
+              {
+                "type": "text",
+                "value": "What year was Java released by Sun Microsystems?"
+              },
+              {
+                "type": "section_heading",
+                "value": "Question 2"
+              },
+              {
+                "type": "text",
+                "value": "What is the slogan associated with the Java Virtual Machine?"
+              },
+              {
+                "type": "section_heading",
+                "value": "Question 3"
+              },
+              {
+                "type": "text",
+                "value": "What method is the entry point of a Java application?"
+              }
+            ]
+          },
+          {
+            "_id": "69b1a024d064336ff3588584",
+            "moduleId": "69b19b995ec931fca4b0dfe6",
+            "courseId": "69b19b995ec931fca4b0dfdf",
+            "order": 4,
+            "type": "project",
+            "title": "Planting a Tree",
+            "duration": "20 min",
+            "language": "java",
+            "starterCode": "public class PlantingATree {\n  public static void main(String[] args) {\n    // Print a ASCII tree!\n    System.out.println(\"    *\");\n    System.out.println(\"   ***\");\n    System.out.println(\"  *****\");\n    System.out.println(\"   |||\");\n  }\n}",
+            "content": [
+              {
+                "type": "label",
+                "value": "HELLO WORLD"
+              },
+              {
+                "type": "heading",
+                "value": "Planting a Tree"
+              },
+              {
+                "type": "duration",
+                "value": "20 min"
+              },
+              {
+                "type": "text",
+                "value": "In this project, you will use your knowledge of print statements to create ASCII art of a tree!"
+              },
+              {
+                "type": "text",
+                "value": "ASCII art is a graphic design technique that uses printable characters from the ASCII character set to display images or create text-based designs."
+              },
+              {
+                "type": "section_heading",
+                "value": "Instructions"
+              },
+              {
+                "type": "checkpoint",
+                "index": 1,
+                "value": "Using System.out.println() statements, create the trunk of your tree using | characters."
+              },
+              {
+                "type": "checkpoint",
+                "index": 2,
+                "value": "Create the leaves of your tree using * characters in a triangular shape."
+              },
+              {
+                "type": "checkpoint",
+                "index": 3,
+                "value": "Add a message below the tree like \"I planted a tree!\"."
+              }
+            ]
+          },
+          {
+            "_id": "69b1a024d064336ff3588585",
+            "moduleId": "69b19b995ec931fca4b0dfe6",
+            "courseId": "69b19b995ec931fca4b0dfdf",
+            "order": 5,
+            "type": "article",
+            "title": "What Is an IDE?",
+            "duration": "4 min",
+            "language": "java",
+            "starterCode": "public class HelloWorld {\n  public static void main(String[] args) {\n    System.out.println(\"Hello World!\");\n  }\n}",
+            "content": [
+              {
+                "type": "label",
+                "value": "HELLO WORLD"
+              },
+              {
+                "type": "heading",
+                "value": "What Is an IDE?"
+              },
+              {
+                "type": "duration",
+                "value": "4 min"
+              },
+              {
+                "type": "text",
+                "value": "An Integrated Development Environment (IDE) is a software application that provides comprehensive facilities for software development."
+              },
+              {
+                "type": "text",
+                "value": "A typical IDE consists of: a source code editor, build automation tools, and a debugger. Most modern IDEs also include intelligent code completion."
+              },
+              {
+                "type": "text",
+                "value": "Popular Java IDEs include IntelliJ IDEA, Eclipse, and NetBeans. They make writing, testing, and debugging Java programs much easier than using a plain text editor."
+              },
+              {
+                "type": "section_heading",
+                "value": "Popular IDEs for Java"
+              },
+              {
+                "type": "checkpoint",
+                "index": 1,
+                "value": "IntelliJ IDEA — The most popular Java IDE, made by JetBrains."
+              },
+              {
+                "type": "checkpoint",
+                "index": 2,
+                "value": "Eclipse — A free, open-source IDE widely used in enterprise."
+              },
+              {
+                "type": "checkpoint",
+                "index": 3,
+                "value": "VS Code — Lightweight editor with Java extension support."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "_id": "69b19b995ec931fca4b0dfe7",
+        "courseId": "69b19b995ec931fca4b0dfdf",
+        "order": 2,
+        "title": "Variables",
+        "description": "Learn about datatypes in Java and how we use them. Then, practice your skills with two projects where you create and manipulate variables.",
+        "items": [
+          {
+            "type": "lesson",
+            "title": "Learn Java: Variables"
+          },
+          {
+            "type": "quiz",
+            "title": "Java Variables Quiz"
+          },
+          {
+            "type": "project",
+            "title": "Java Variables: Mad Libs"
+          },
+          {
+            "type": "lesson",
+            "title": "Learn Java: Manipulating Variables"
+          },
+          {
+            "type": "quiz",
+            "title": "Java Variable Manipulation Quiz"
+          },
+          {
+            "type": "project",
+            "title": "Math Magic"
+          }
+        ],
+        "lessonsCount": 2,
+        "articlesCount": 0,
+        "quizzesCount": 2,
+        "projectsCount": 2,
+        "videosCount": 0,
+        "conceptsCount": 6,
+        "lessons": [
+          {
+            "_id": "69b1a024d064336ff3588586",
+            "moduleId": "69b19b995ec931fca4b0dfe7",
+            "courseId": "69b19b995ec931fca4b0dfdf",
+            "order": 1,
+            "type": "lesson",
+            "title": "Learn Java: Variables",
+            "duration": "8 min",
+            "language": "java",
+            "starterCode": "public class Variables {\n  public static void main(String[] args) {\n    int age = 25;\n    String name = \"Alice\";\n    double gpa = 3.9;\n    boolean isStudent = true;\n    System.out.println(name + \" is \" + age + \" years old.\");\n  }\n}",
+            "content": [
+              {
+                "type": "label",
+                "value": "VARIABLES"
+              },
+              {
+                "type": "heading",
+                "value": "Learn Java: Variables"
+              },
+              {
+                "type": "duration",
+                "value": "8 min"
+              },
+              {
+                "type": "text",
+                "value": "A variable is a named location in memory that stores a value. In Java, every variable must be declared with a data type."
+              },
+              {
+                "type": "text",
+                "value": "Java is a statically typed language, which means you must declare the type of a variable before using it. Common data types include:"
+              },
+              {
+                "type": "checkpoint",
+                "index": 1,
+                "value": "int — Stores whole numbers (e.g., 42, -7)"
+              },
+              {
+                "type": "checkpoint",
+                "index": 2,
+                "value": "double — Stores decimal numbers (e.g., 3.14)"
+              },
+              {
+                "type": "checkpoint",
+                "index": 3,
+                "value": "String — Stores text (e.g., \"Hello\")"
+              },
+              {
+                "type": "checkpoint",
+                "index": 4,
+                "value": "boolean — Stores true or false"
+              },
+              {
+                "type": "code_block",
+                "language": "java",
+                "value": "int myAge = 25;\nString myName = \"Alice\";\ndouble myGpa = 3.9;\nboolean isEnrolled = true;"
+              },
+              {
+                "type": "text",
+                "value": "In the example above, we declare four variables with different data types. The variable name comes after the type, followed by an = sign and the variable's value."
+              },
+              {
+                "type": "section_heading",
+                "value": "Instructions"
+              },
+              {
+                "type": "checkpoint",
+                "index": 1,
+                "value": "Declare an int variable called score and set it to 100."
+              },
+              {
+                "type": "checkpoint",
+                "index": 2,
+                "value": "Declare a String variable called playerName and set it to your name."
+              },
+              {
+                "type": "checkpoint",
+                "index": 3,
+                "value": "Print both variables using System.out.println()."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "_id": "69b19b995ec931fca4b0dfe8",
+        "courseId": "69b19b995ec931fca4b0dfdf",
+        "order": 3,
+        "title": "Object-Oriented Java",
+        "description": "Learn about object-oriented programming in Java. Explore syntax for defining classes and creating instances.",
+        "items": [
+          {
+            "type": "video",
+            "title": "Classes and Objects"
+          },
+          {
+            "type": "lesson",
+            "title": "Java: Introduction to Classes"
+          },
+          {
+            "type": "quiz",
+            "title": "Intro to Java Classes"
+          },
+          {
+            "type": "lesson",
+            "title": "Learn Java: Methods"
+          },
+          {
+            "type": "quiz",
+            "title": "Java Methods Quiz"
+          },
+          {
+            "type": "project",
+            "title": "A Basic Calculator"
+          },
+          {
+            "type": "project",
+            "title": "Build A Droid"
+          }
+        ],
+        "lessonsCount": 2,
+        "articlesCount": 0,
+        "quizzesCount": 2,
+        "projectsCount": 2,
+        "videosCount": 1,
+        "conceptsCount": 7,
+        "lessons": [
+          {
+            "_id": "69b1a024d064336ff3588587",
+            "moduleId": "69b19b995ec931fca4b0dfe8",
+            "courseId": "69b19b995ec931fca4b0dfdf",
+            "order": 2,
+            "type": "lesson",
+            "title": "Java: Introduction to Classes",
+            "duration": "10 min",
+            "language": "java",
+            "starterCode": "public class Car {\n  // Instance variables\n  String color;\n  int speed;\n\n  // Constructor\n  public Car(String color, int speed) {\n    this.color = color;\n    this.speed = speed;\n  }\n\n  // Method\n  public void honk() {\n    System.out.println(\"Beep beep!\");\n  }\n\n  public static void main(String[] args) {\n    Car myCar = new Car(\"Red\", 100);\n    myCar.honk();\n    System.out.println(\"My car is \" + myCar.color);\n  }\n}",
+            "content": [
+              {
+                "type": "label",
+                "value": "OBJECT-ORIENTED JAVA"
+              },
+              {
+                "type": "heading",
+                "value": "Java: Introduction to Classes"
+              },
+              {
+                "type": "duration",
+                "value": "10 min"
+              },
+              {
+                "type": "text",
+                "value": "In object-oriented programming, a class is a blueprint from which individual objects are created. A class defines the properties (instance variables) and behaviors (methods) that its objects will have."
+              },
+              {
+                "type": "text",
+                "value": "Think of a class like a cookie cutter and objects like the cookies. The cookie cutter defines the shape; the cookies are the actual items created from that mold."
+              },
+              {
+                "type": "code_block",
+                "language": "java",
+                "value": "public class Dog {\n  String name;\n  String breed;\n\n  public Dog(String name, String breed) {\n    this.name = name;\n    this.breed = breed;\n  }\n\n  public void bark() {\n    System.out.println(name + \" says: Woof!\");\n  }\n}"
+              },
+              {
+                "type": "section_heading",
+                "value": "Instructions"
+              },
+              {
+                "type": "checkpoint",
+                "index": 1,
+                "value": "Create a class called Bicycle with instance variables color and gears."
+              },
+              {
+                "type": "checkpoint",
+                "index": 2,
+                "value": "Add a constructor that sets these variables."
+              },
+              {
+                "type": "checkpoint",
+                "index": 3,
+                "value": "Add a method called ride() that prints \"Riding the [color] bicycle!\"."
+              },
+              {
+                "type": "checkpoint",
+                "index": 4,
+                "value": "In the main method, create a Bicycle object and call ride()."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "_id": "69b19b995ec931fca4b0dfe9",
+        "courseId": "69b19b995ec931fca4b0dfdf",
+        "order": 4,
+        "title": "Conditionals and Control Flow",
+        "description": "Conditionals and control flow in Java programs.",
+        "items": [
+          {
+            "type": "lesson",
+            "title": "Conditionals and Control Flow"
+          },
+          {
+            "type": "lesson",
+            "title": "Conditional Operators"
+          },
+          {
+            "type": "quiz",
+            "title": "Conditionals and Control Flow"
+          },
+          {
+            "type": "project",
+            "title": "A Simple Car Loan Payment Calculator"
+          },
+          {
+            "type": "project",
+            "title": "Continents and Cities"
+          }
+        ],
+        "lessonsCount": 2,
+        "articlesCount": 0,
+        "quizzesCount": 1,
+        "projectsCount": 2,
+        "videosCount": 0,
+        "conceptsCount": 5,
+        "lessons": []
+      },
+      {
+        "_id": "69b19b995ec931fca4b0dfea",
+        "courseId": "69b19b995ec931fca4b0dfdf",
+        "order": 5,
+        "title": "Arrays and ArrayLists",
+        "description": "Build lists of data with Java arrays and ArrayLists.",
+        "items": [
+          {
+            "type": "lesson",
+            "title": "Learn Java: Arrays"
+          },
+          {
+            "type": "quiz",
+            "title": "Java Arrays Quiz"
+          },
+          {
+            "type": "lesson",
+            "title": "Learn Java: ArrayLists"
+          },
+          {
+            "type": "quiz",
+            "title": "Java ArrayList Quiz"
+          },
+          {
+            "type": "project",
+            "title": "Desert Island Playlist"
+          }
+        ],
+        "lessonsCount": 2,
+        "articlesCount": 0,
+        "quizzesCount": 2,
+        "projectsCount": 1,
+        "videosCount": 0,
+        "conceptsCount": 5,
+        "lessons": []
+      },
+      {
+        "_id": "69b19b995ec931fca4b0dfeb",
+        "courseId": "69b19b995ec931fca4b0dfdf",
+        "order": 6,
+        "title": "Loops",
+        "description": "Use loops to iterate through lists and repeat code.",
+        "items": [
+          {
+            "type": "lesson",
+            "title": "Learn Java: Loops"
+          },
+          {
+            "type": "quiz",
+            "title": "Learn Java: Loops Quiz"
+          },
+          {
+            "type": "project",
+            "title": "Fizz Buzz"
+          },
+          {
+            "type": "project",
+            "title": "The Prime Directive"
+          }
+        ],
+        "lessonsCount": 1,
+        "articlesCount": 0,
+        "quizzesCount": 1,
+        "projectsCount": 2,
+        "videosCount": 0,
+        "conceptsCount": 4,
+        "lessons": [
+          {
+            "_id": "69b1a024d064336ff3588588",
+            "moduleId": "69b19b995ec931fca4b0dfeb",
+            "courseId": "69b19b995ec931fca4b0dfdf",
+            "order": 1,
+            "type": "lesson",
+            "title": "Learn Java: Loops",
+            "duration": "8 min",
+            "language": "java",
+            "starterCode": "public class Loops {\n  public static void main(String[] args) {\n    // For loop\n    for (int i = 1; i <= 5; i++) {\n      System.out.println(\"Count: \" + i);\n    }\n\n    // While loop\n    int count = 0;\n    while (count < 3) {\n      System.out.println(\"While: \" + count);\n      count++;\n    }\n  }\n}",
+            "content": [
+              {
+                "type": "label",
+                "value": "LOOPS"
+              },
+              {
+                "type": "heading",
+                "value": "Learn Java: Loops"
+              },
+              {
+                "type": "duration",
+                "value": "8 min"
+              },
+              {
+                "type": "text",
+                "value": "A loop is a programming construct that repeats a block of code until a condition is met. Java has three types of loops: for, while, and do-while."
+              },
+              {
+                "type": "text",
+                "value": "The for loop is used when you know exactly how many times you want to repeat a block. The while loop is used when you want to repeat a block as long as a condition is true."
+              },
+              {
+                "type": "code_block",
+                "language": "java",
+                "value": "// For loop: counts 1 to 10\nfor (int i = 1; i <= 10; i++) {\n  System.out.println(i);\n}\n\n// While loop: counts down from 5\nint countdown = 5;\nwhile (countdown > 0) {\n  System.out.println(countdown);\n  countdown--;\n}"
+              },
+              {
+                "type": "section_heading",
+                "value": "Instructions"
+              },
+              {
+                "type": "checkpoint",
+                "index": 1,
+                "value": "Write a for loop that prints the numbers 1 through 10."
+              },
+              {
+                "type": "checkpoint",
+                "index": 2,
+                "value": "Write a while loop that prints even numbers from 2 to 20."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "_id": "69b19b995ec931fca4b0dfec",
+        "courseId": "69b19b995ec931fca4b0dfdf",
+        "order": 7,
+        "title": "String Methods",
+        "description": "The Java String class provides a lot of useful methods for performing operations on strings and data manipulation.",
+        "items": [
+          {
+            "type": "lesson",
+            "title": "String Methods"
+          },
+          {
+            "type": "quiz",
+            "title": "String Methods"
+          },
+          {
+            "type": "project",
+            "title": "DNA Sequencing"
+          }
+        ],
+        "lessonsCount": 1,
+        "articlesCount": 0,
+        "quizzesCount": 1,
+        "projectsCount": 1,
+        "videosCount": 0,
+        "conceptsCount": 3,
+        "lessons": []
+      },
+      {
+        "_id": "69b19b995ec931fca4b0dfed",
+        "courseId": "69b19b995ec931fca4b0dfdf",
+        "order": 8,
+        "title": "Access, Encapsulation, and Static Methods",
+        "description": "Let's dive deeper into classes and learn about some of their more advanced features.",
+        "items": [
+          {
+            "type": "lesson",
+            "title": "Access, Encapsulation, and Scope"
+          },
+          {
+            "type": "quiz",
+            "title": "Access, Encapsulation, and Scope"
+          },
+          {
+            "type": "article",
+            "title": "Static Methods of the Math Class"
+          },
+          {
+            "type": "lesson",
+            "title": "Static Variables and Methods"
+          },
+          {
+            "type": "quiz",
+            "title": "Static Variables and Methods"
+          }
+        ],
+        "lessonsCount": 2,
+        "articlesCount": 1,
+        "quizzesCount": 2,
+        "projectsCount": 0,
+        "videosCount": 0,
+        "conceptsCount": 5,
+        "lessons": []
+      },
+      {
+        "_id": "69b19b995ec931fca4b0dfee",
+        "courseId": "69b19b995ec931fca4b0dfdf",
+        "order": 9,
+        "title": "Inheritance and Polymorphism",
+        "description": "Dive deeper into object-oriented Java with inheritance and polymorphism.",
+        "items": [
+          {
+            "type": "lesson",
+            "title": "Inheritance and Polymorphism"
+          },
+          {
+            "type": "quiz",
+            "title": "Inheritance and Polymorphism Quiz"
+          },
+          {
+            "type": "project",
+            "title": "Language Families"
+          }
+        ],
+        "lessonsCount": 1,
+        "articlesCount": 0,
+        "quizzesCount": 1,
+        "projectsCount": 1,
+        "videosCount": 0,
+        "conceptsCount": 3,
+        "lessons": []
+      },
+      {
+        "_id": "69b19b995ec931fca4b0dfef",
+        "courseId": "69b19b995ec931fca4b0dfdf",
+        "order": 10,
+        "title": "Debugging",
+        "description": "Learn about different types of errors in Java and practice finding them.",
+        "items": [
+          {
+            "type": "lesson",
+            "title": "Debugging"
+          },
+          {
+            "type": "quiz",
+            "title": "Debugging"
+          },
+          {
+            "type": "project",
+            "title": "Bug Detective"
+          }
+        ],
+        "lessonsCount": 1,
+        "articlesCount": 0,
+        "quizzesCount": 1,
+        "projectsCount": 1,
+        "videosCount": 0,
+        "conceptsCount": 3,
+        "lessons": []
+      },
+      {
+        "_id": "69b19b995ec931fca4b0dff0",
+        "courseId": "69b19b995ec931fca4b0dfdf",
+        "order": 11,
+        "title": "Two-Dimensional Arrays",
+        "description": "Take your understanding of arrays and loops to the next dimension! Learn how to create and use two-dimensional arrays.",
+        "items": [
+          {
+            "type": "lesson",
+            "title": "2D Arrays: Java"
+          },
+          {
+            "type": "quiz",
+            "title": "Quiz: 2D Arrays in Java"
+          },
+          {
+            "type": "project",
+            "title": "2D Arrays: Image Manipulation Project"
+          },
+          {
+            "type": "informational",
+            "title": "Next Steps"
+          }
+        ],
+        "lessonsCount": 1,
+        "articlesCount": 0,
+        "quizzesCount": 1,
+        "projectsCount": 1,
+        "videosCount": 0,
+        "conceptsCount": 4,
+        "lessons": []
+      },
+      {
+        "_id": "69b19b995ec931fca4b0dff1",
+        "courseId": "69b19b995ec931fca4b0dfdf",
+        "order": 12,
+        "title": "Iterators and Error Handling",
+        "description": "Iterate through custom data structures and handle runtime exceptions gracefully.",
+        "items": [
+          {
+            "type": "lesson",
+            "title": "Iterators"
+          },
+          {
+            "type": "lesson",
+            "title": "Error Handling"
+          },
+          {
+            "type": "quiz",
+            "title": "Iterators and Error Handling Quiz"
+          },
+          {
+            "type": "project",
+            "title": "Morse Code Translator"
+          }
+        ],
+        "lessonsCount": 2,
+        "articlesCount": 0,
+        "quizzesCount": 1,
+        "projectsCount": 1,
+        "videosCount": 0,
+        "conceptsCount": 4,
+        "lessons": []
+      },
+      {
+        "_id": "69b19b995ec931fca4b0dff2",
+        "courseId": "69b19b995ec931fca4b0dfdf",
+        "order": 13,
+        "title": "Interview Prep: Data Structures",
+        "description": "Tackle common technical interview questions based on core data structures.",
+        "items": [
+          {
+            "type": "project",
+            "title": "Linear Data Structures: Java"
+          },
+          {
+            "type": "project",
+            "title": "Hash Maps: Java"
+          },
+          {
+            "type": "article",
+            "title": "Recursion vs Iteration"
+          }
+        ],
+        "lessonsCount": 0,
+        "articlesCount": 1,
+        "quizzesCount": 0,
+        "projectsCount": 2,
+        "videosCount": 0,
+        "conceptsCount": 3,
+        "lessons": []
+      }
+    ]
+  }
+]

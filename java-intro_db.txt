@@ -1,0 +1,532 @@
+INTRODUCTION
+------------
+Java is one of the most popular programming languages in the world. It is widely
+used for building web applications, Android mobile apps, enterprise systems,
+and cloud-based software. Java follows the Object-Oriented Programming (OOP)
+approach which helps developers write clean, reusable, and maintainable code.
+
+One of the biggest advantages of Java is its platform independence. This means
+a Java program can run on any system (Windows, Linux, Mac) without modification
+as long as the system has the Java Virtual Machine (JVM). Because of its
+stability, security, and large community support, Java is heavily used by
+companies for large-scale software systems.
+
+-----------------------------------------
+1. INTRODUCTION TO JAVA
+-----------------------------------------
+
+• What is Java
+Java is a high-level, object-oriented programming language developed by
+Sun Microsystems (now owned by Oracle). It is designed to be simple,
+secure, portable, and powerful for building different types of applications.
+
+• History of Java
+Java was created by James Gosling and his team at Sun Microsystems in 1995.
+Originally it was designed for interactive television systems but later
+became very popular for web development and enterprise software. Today,
+Java is maintained by Oracle Corporation.
+
+• Features of Java
+Java provides many powerful features that make it widely used:
+
+- Object-Oriented
+  Everything in Java is based on classes and objects.
+
+- Platform Independent
+  Java programs can run on any operating system.
+
+- Secure
+  Java provides built-in security features like bytecode verification.
+
+- Robust
+  Strong memory management and exception handling.
+
+- Multithreaded
+  Java allows multiple tasks to run simultaneously.
+
+- Portable
+  Java programs can run on different machines without modification.
+
+• Java Editions (SE, EE, ME)
+
+Java is divided into different editions depending on the type of application:
+
+Java SE (Standard Edition)
+Used for core Java programming and desktop applications.
+
+Java EE (Enterprise Edition)
+Used for building large-scale enterprise applications such as web services
+and distributed systems.
+
+Java ME (Micro Edition)
+Used for small devices like embedded systems and IoT devices.
+
+• How Java Works
+
+Java follows the principle:
+"Write Once, Run Anywhere".
+
+Step 1: Java source code is written in a .java file.
+Step 2: The Java compiler (javac) converts the code into bytecode.
+Step 3: The JVM executes the bytecode on any platform.
+
+Flow:
+
+Java Source Code (.java)
+        ↓
+Java Compiler (javac)
+        ↓
+Bytecode (.class)
+        ↓
+Java Virtual Machine (JVM)
+        ↓
+Program Output
+
+• JVM vs JRE vs JDK
+
+JVM (Java Virtual Machine)
+JVM is the engine that runs Java programs. It converts Java bytecode
+into machine code so the system can execute it.
+
+JRE (Java Runtime Environment)
+JRE provides the environment required to run Java programs.
+It includes JVM + libraries needed to run applications.
+
+JDK (Java Development Kit)
+JDK is the full development package used to develop Java programs.
+It contains:
+
+JDK = JRE + Development Tools (compiler, debugger, etc.)
+
+• Platform Independence
+
+Java programs are platform independent because they run on the JVM.
+The same compiled Java bytecode can run on Windows, Linux, or Mac
+without changing the program.
+
+This concept is known as:
+"WORA – Write Once Run Anywhere"
+
+• First Java Program (Hello World)
+
+Below is the simplest Java program:
+
+public class HelloWorld {
+    public static void main(String[] args) {
+        // Print message to screen
+        System.out.println("Hello World!");
+    }
+}
+
+Explanation:
+
+public class HelloWorld
+Defines a class named HelloWorld.
+
+public static void main(String[] args)
+This is the main method where the program starts execution.
+
+System.out.println()
+Used to print text on the console.
+
+2. JAVA SETUP
+-----------------------------------------
+
+To start programming in Java, you need to install the Java Development
+Kit (JDK) and optionally an IDE (Integrated Development Environment).
+
+STEP 1: DOWNLOAD JDK
+-----------------------------------------
+
+Official Java download website: https://www.oracle.com/java/technologies/downloads/
+
+Steps:
+
+1. Open the website above.
+2. Choose the latest version of JDK (for example JDK 21).
+3. Select your operating system:
+   - Windows
+   - Linux
+   - Mac
+4. Download the installer.
+5. Accept the license agreement.
+6. Run the installer.
+
+STEP 2: INSTALL JDK
+-----------------------------------------
+
+Windows Installation Steps:
+
+1. Run the downloaded .exe file.
+2. Click Next.
+3. Choose installation directory (default is fine).
+4. Click Install.
+5. Wait for installation to complete.
+6. Click Finish.
+
+STEP 3: SET JAVA PATH (IMPORTANT)
+-----------------------------------------
+
+1. Open Start Menu
+2. Search "Environment Variables"
+3. Click "Edit the system environment variables"
+4. Click "Environment Variables"
+5. Under System Variables click "Path"
+6. Click Edit
+7. Add the JDK bin folder path
+
+Example:
+C:\Program Files\Java\jdk-21\bin
+Click OK and save.
+
+STEP 4: VERIFY JAVA INSTALLATION
+-----------------------------------------
+
+Open Command Prompt or Terminal and run:
+java -version
+
+If installed correctly, you will see output like:
+java version "21"
+Also check compiler: javac -version
+
+STEP 5: INSTALL AN IDE
+-----------------------------------------
+
+An IDE helps you write and manage Java code easily.
+
+Popular IDEs:
+
+IntelliJ IDEA: https://www.jetbrains.com/idea/
+Eclipse: https://www.eclipse.org/downloads/
+VS Code: https://code.visualstudio.com/
+
+Recommended for beginners:
+IntelliJ IDEA Community Edition
+
+STEP 6: COMPILE AND RUN JAVA PROGRAM
+-----------------------------------------
+
+Create a file: HelloWorld.java
+Write the code:
+
+public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello World");
+    }
+}
+
+Compile program:
+javac HelloWorld.java
+
+Run program:
+java HelloWorld
+
+Output:
+Hello World
+
+STEP 7: JAVA PROGRAM STRUCTURE
+-----------------------------------------
+
+Basic structure of a Java program:
+
+Class Declaration
+Main Method
+Statements
+
+Example:
+
+public class ProgramName {
+    public static void main(String[] args) {
+        // program code
+    }
+}
+
+
+3. JAVA BASICS
+--------------
+• Comments
+• Identifiers
+• Keywords
+• Variables
+• Data Types
+• Type Casting
+• Operators
+  - Arithmetic
+  - Logical
+  - Relational
+  - Bitwise
+  - Assignment
+  - Ternary
+
+4. CONTROL STATEMENTS
+---------------------
+• if
+• if-else
+• nested if
+• switch
+• for loop
+• while loop
+• do-while loop
+• break
+• continue
+• return
+
+5. METHODS
+----------
+• Method Syntax
+• Method Parameters
+• Return Types
+• Method Overloading
+• Recursion
+• Static Methods
+• Instance Methods
+• Varargs
+• Command Line Arguments
+
+6. ARRAYS
+---------
+• Single Dimensional Arrays
+• Multi Dimensional Arrays
+• Jagged Arrays
+• Array Class
+• Passing Arrays to Methods
+• Returning Arrays from Methods
+
+7. STRINGS
+----------
+• String Class
+• String Methods
+• String Immutability
+• String Pool
+• StringBuilder
+• StringBuffer
+• String vs StringBuilder vs StringBuffer
+
+8. OBJECT ORIENTED PROGRAMMING (OOP)
+------------------------------------
+• Class
+• Object
+• Constructors
+• Constructor Overloading
+• this Keyword
+• super Keyword
+• Inheritance
+• Method Overriding
+• Polymorphism
+• Encapsulation
+• Abstraction
+
+9. PACKAGES & ACCESS CONTROL
+----------------------------
+• Packages
+• Import Keyword
+• Access Modifiers
+  - public
+  - private
+  - protected
+  - default
+
+10. IMPORTANT JAVA CONCEPTS
+---------------------------
+• static Keyword
+• final Keyword
+• abstract Class
+• Object Class
+• Wrapper Classes
+• Autoboxing & Unboxing
+• Enum
+• Inner Classes
+
+11. INTERFACES
+--------------
+• Interface Basics
+• Implementing Interfaces
+• Multiple Inheritance using Interface
+• Default Methods
+• Static Methods in Interface
+• Functional Interface
+• Marker Interface
+• Nested Interface
+
+12. EXCEPTION HANDLING
+----------------------
+• What is Exception
+• Types of Exceptions
+• try
+• catch
+• finally
+• throw
+• throws
+• Custom Exceptions
+• Checked vs Unchecked Exceptions
+
+13. GENERICS
+------------
+• Generic Classes
+• Generic Methods
+• Bounded Types
+• Wildcards
+
+14. COLLECTION FRAMEWORK
+------------------------
+• Collection Interface
+• List
+   - ArrayList
+   - LinkedList
+• Set
+   - HashSet
+   - LinkedHashSet
+   - TreeSet
+• Queue
+   - PriorityQueue
+   - Deque
+• Map
+   - HashMap
+   - LinkedHashMap
+   - TreeMap
+• Iterator
+• Comparable
+• Comparator
+• Collections Utility Class
+
+15. JAVA 8 FEATURES
+-------------------
+• Lambda Expressions
+• Functional Interfaces
+• Method References
+• Stream API
+• Optional Class
+• Date and Time API
+
+16. FILE HANDLING (I/O)
+-----------------------
+• Java IO Overview
+• File Class
+• FileInputStream
+• FileOutputStream
+• FileReader
+• FileWriter
+• BufferedReader
+• BufferedWriter
+• Serialization
+• Deserialization
+• NIO Package
+
+17. MULTITHREADING
+------------------
+• Process vs Thread
+• Creating Threads
+• Thread Class
+• Runnable Interface
+• Thread Lifecycle
+• Thread Methods
+• Synchronization
+• Inter Thread Communication
+• Deadlocks
+• Thread Pools
+• Executor Framework
+• Locks
+• Atomic Variables
+
+18. REGULAR EXPRESSIONS
+-----------------------
+• Pattern Class
+• Matcher Class
+• Character Classes
+• Quantifiers
+• Pattern Matching
+
+19. MEMORY MANAGEMENT
+---------------------
+• Stack Memory
+• Heap Memory
+• Method Area
+• JVM Architecture
+• Garbage Collection
+• Memory Leaks
+
+20. NETWORKING
+--------------
+• Networking Basics
+• TCP vs UDP
+• Socket Programming
+• ServerSocket
+• URL Class
+• HTTP Connections
+
+21. DATABASE CONNECTIVITY (JDBC)
+--------------------------------
+• JDBC Architecture
+• JDBC Drivers
+• Database Connection
+• Statement
+• PreparedStatement
+• CallableStatement
+• ResultSet
+• Transactions
+
+22. JAVA MODULE SYSTEM
+----------------------
+• Java Modules
+• module-info.java
+• Creating Modular Applications
+
+23. BUILD TOOLS
+---------------
+• Maven
+• Gradle
+• Dependency Management
+
+24. TESTING
+-----------
+• Unit Testing
+• JUnit
+• Test Cases
+• Assertions
+• Mocking (Mockito basics)
+
+25. LOGGING
+-----------
+• Logging Basics
+• java.util.logging
+• Log4j
+• SLF4J
+
+26. DESIGN PATTERNS
+-------------------
+• Singleton
+• Factory
+• Builder
+• Observer
+• Strategy
+• MVC Pattern
+
+27. ENTERPRISE JAVA (OPTIONAL ADVANCED)
+--------------------------------------
+• Spring Framework
+• Spring Boot
+• Hibernate
+• REST APIs
+• Microservices
+
+28. PROJECTS (VERY IMPORTANT)
+-----------------------------
+Beginner Projects
+• Number Guessing Game
+• Calculator
+• Student Management System
+
+Intermediate Projects
+• Banking System
+• Chat Application
+• File Search Tool
+
+Advanced Projects
+• REST API Backend
+• E-commerce Backend
+• Multi-threaded Server
+• Spring Boot Application
+
+==============================
+END OF ROADMAP
+==============================

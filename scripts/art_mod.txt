@@ -1,0 +1,374 @@
+1. HelloWorld (Introduction)
+
+Articles:
+- Introduction to Java
+- Writing Your First Java Program
+
+Projects:
+- Java Facts Program
+- Personal Introduction Program
+- Favorite Things Printer
+
+------------------------------------------------
+
+2. Variables
+
+Articles:
+- Understanding Variables in Java
+- Java Data Types and Variable Usage
+
+Projects:
+- Student Profile Program
+- Employee Information System
+- Temperature Converter
+
+------------------------------------------------
+
+3. Operators
+
+Articles:
+- Java Arithmetic and Assignment Operators
+- Comparison and Logical Operators in Java
+
+Projects:
+- Simple Calculator
+- Shopping Bill Calculator
+- Area Calculator
+
+------------------------------------------------
+
+4. Conditional Statements
+
+Articles:
+- Decision Making in Java
+- Switch Statements in Java
+
+Projects:
+- Grade Checker
+- Voting Eligibility Program
+- Number Checker
+
+------------------------------------------------
+
+5. Loop Statements
+
+Articles:
+- Understanding Loops in Java
+- For Loop and Loop Control Statements
+
+Projects:
+- Number Printer
+- Multiplication Table Generator
+- Star Pattern Generator
+
+------------------------------------------------
+
+6. Arrays
+
+Articles:
+- Introduction to Arrays in Java
+- Working with Arrays and Iteration
+
+Projects:
+- Student Marks System
+- Highest Number Finder
+- Even Odd Counter
+
+------------------------------------------------
+
+7. Methods
+
+Articles:
+- Introduction to Java Methods
+- Method Parameters and Return Values
+
+Projects:
+- Math Utility Program
+- Temperature Converter using Methods
+- Prime Number Checker
+
+------------------------------------------------
+
+8. Class and Object
+
+Articles:
+- Understanding Classes and Objects in Java
+- Creating and Using Objects
+
+Projects:
+- Student Management System
+- Book Library System
+- Car Information System
+
+------------------------------------------------
+
+9. Static
+
+Articles:
+- Static Variables and Static Methods in Java
+
+Projects:
+- Visitor Counter
+- Company Employee Counter
+
+------------------------------------------------
+
+10. Non-Static and JVM Memory
+
+Articles:
+- Instance Members and JVM Memory Model
+
+Projects:
+- Bank Account Simulator
+- Product Inventory
+
+------------------------------------------------
+
+11. Blocks
+
+Articles:
+- Static Blocks and Instance Blocks in Java
+
+Projects:
+- Execution Order Program
+- Initialization Demo
+
+------------------------------------------------
+
+12. String Functions
+
+Articles:
+- Working with Strings in Java
+- Common Java String Methods
+
+Projects:
+- String Analyzer
+- Palindrome Checker
+- Password Strength Checker
+
+------------------------------------------------
+
+13. Constructor
+
+Articles:
+- Constructors in Java
+- Constructor Overloading
+
+Projects:
+- Product Inventory System
+- Student Registration System
+
+------------------------------------------------
+
+14. Pass by Value
+
+Articles:
+- Understanding Pass by Value in Java
+
+Projects:
+- Swap Numbers Program
+- Number Modifier
+
+------------------------------------------------
+
+15. Pass by Reference
+
+Articles:
+- Passing Objects to Methods in Java
+
+Projects:
+- Student Object Modifier
+- Product Price Updater
+
+------------------------------------------------
+
+16. Composition
+
+Articles:
+- Composition and Has-A Relationship in Java
+
+Projects:
+- Car and Engine System
+- Computer System
+
+------------------------------------------------
+
+17. Inheritance
+
+Articles:
+- Inheritance in Java
+- Types of Inheritance
+
+Projects:
+- Animal Hierarchy
+- Employee System
+
+------------------------------------------------
+
+18. Method Overloading
+
+Articles:
+- Method Overloading and Compile-Time Polymorphism
+
+Projects:
+- Calculator Overloading
+- Area Calculator
+
+------------------------------------------------
+
+19. Method Overriding
+
+Articles:
+- Method Overriding and Runtime Polymorphism
+
+Projects:
+- Shape Area Program
+- Notification System
+
+------------------------------------------------
+
+20. Typecasting
+
+Articles:
+- Upcasting and Downcasting in Java
+
+Projects:
+- Employee Role System
+- Animal Type Identifier
+
+------------------------------------------------
+
+21. Polymorphism
+
+Articles:
+- Understanding Polymorphism in Java
+
+Projects:
+- Payment System
+- Shape Drawing Program
+
+------------------------------------------------
+
+22. Abstract Class
+
+Articles:
+- Abstract Classes and Methods in Java
+
+Projects:
+- Vehicle System
+- Bank System
+
+------------------------------------------------
+
+23. Interface
+
+Articles:
+- Interfaces in Java
+- Multiple Inheritance with Interfaces
+
+Projects:
+- Smart Home Devices
+- Payment Gateway
+
+------------------------------------------------
+
+24. Package
+
+Articles:
+- Creating and Using Java Packages
+
+Projects:
+- Math Utility Package
+- Student Package
+
+------------------------------------------------
+
+25. Access Specifiers
+
+Articles:
+- Access Modifiers in Java
+
+Projects:
+- User Security System
+- Bank Account Privacy
+
+------------------------------------------------
+
+26. Encapsulation
+
+Articles:
+- Encapsulation and Data Hiding in Java
+
+Projects:
+- Bank Account System
+- Student Record System
+
+------------------------------------------------
+
+27. Collection
+
+Articles:
+- Introduction to the Java Collection Framework
+- Working with Lists, Sets, and Maps
+
+Projects:
+- Student List Manager
+- Contact Book
+
+------------------------------------------------
+
+28. Object Class
+
+Articles:
+- Understanding the Java Object Class
+
+Projects:
+- Student Comparison System
+- Object Logger
+
+------------------------------------------------
+
+29. String Class
+
+Articles:
+- Java String Class and String Pool
+
+Projects:
+- Username Generator
+- Email Validator
+
+------------------------------------------------
+
+30. Exception Handling
+
+Articles:
+- Exception Handling in Java
+- Custom Exceptions in Java
+
+Projects:
+- Safe Calculator
+- Login System
+
+------------------------------------------------
+
+31. Threads
+
+Articles:
+- Introduction to Multithreading in Java
+- Thread Lifecycle and Synchronization
+
+Projects:
+- Multi-thread Counter
+- File Downloader Simulator
+
+------------------------------------------------
+
+32. File Handling
+
+Articles:
+- Reading Files in Java
+- Writing Files in Java
+
+Projects:
+- Student File Database
+- Notes Saver
