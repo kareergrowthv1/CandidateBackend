@@ -29,6 +29,8 @@ async function ensureCollectionIndexes() {
   await ensureCollection(db, COLLECTIONS.INTERVIEW_RESPONSES);
   await ensureCollection(db, COLLECTIONS.CODING_RESPONSES);
   await ensureCollection(db, COLLECTIONS.APTITUDE_RESPONSES);
+  await ensureCollection(db, COLLECTIONS.AIMOCK_RESPONSES);
+  await ensureCollection(db, COLLECTIONS.RESUME_TEMPLATES);
 
   // ── Round 1 & 2: interview responses ─────────────────────────────────────
   const interviews = db.collection(COLLECTIONS.INTERVIEW_RESPONSES);
@@ -55,6 +57,16 @@ async function ensureCollectionIndexes() {
     { unique: true, name: 'idx_cand_pos_uniq', background: true }
   );
   await aptitude.createIndex({ createdAt: 1 }, { name: 'idx_created', background: true });
+
+  // ── AI Mock Sessions (History) ────────────────────────────────────────────
+  const aimock = db.collection(COLLECTIONS.AIMOCK_RESPONSES);
+  await aimock.createIndex({ candidateId: 1 }, { name: 'idx_candidate', background: true });
+  await aimock.createIndex({ completedAt: -1, savedAt: -1 }, { name: 'idx_date', background: true });
+
+  // Resume templates (sql collection in kareergrowth)
+  const resumeTemplates = db.collection(COLLECTIONS.RESUME_TEMPLATES);
+  await resumeTemplates.createIndex({ key: 1 }, { unique: true, name: 'idx_template_key_uniq', background: true });
+  await resumeTemplates.createIndex({ createdAt: -1 }, { name: 'idx_created', background: true });
 
   console.log('[MongoDB] ✅ All collections and indexes ready');
 }

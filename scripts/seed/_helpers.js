@@ -22,7 +22,7 @@ const MAIN = `public class Main {\n    public static void main(String[] args) {\
 /**
  * Build rich lesson content: intro → concepts → table → example → pitfalls → tasks
  */
-function buildLessonContent(label, title, duration, sections) {
+function buildLessonContent(label, title, duration, sections, language = 'java') {
     const out = [
         { type: 'label', value: label },
         { type: 'heading', value: title },
@@ -35,7 +35,7 @@ function buildLessonContent(label, title, duration, sections) {
             if (s.text) out.push({ type: 'text', value: s.text });
             if (s.rich) out.push({ type: 'rich_text', value: s.rich });
             if (s.list) out.push({ type: 'list', value: s.list });
-            if (s.code) out.push({ type: 'code_block', language: s.lang || 'java', value: s.code });
+            if (s.code) out.push({ type: 'code_block', language: s.lang || language, value: s.code });
             if (s.image) out.push({ type: 'image', value: s.image, caption: s.caption || '' });
         } else if (s.type === 'task') {
             checkpointIndex += 1;
@@ -57,6 +57,8 @@ async function seedModule(options) {
         description,
         moduleOrder,
         label,
+        courseSlug = 'java',
+        language = 'java',
         lessons, // [{ title, duration?, sections: [...], validation?, starterCode?, fileName? }]
     } = options;
 
@@ -67,9 +69,9 @@ async function seedModule(options) {
         const lessonsCol = db.collection('Lessons');
         const coursesCol = db.collection('Courses');
 
-        const course = await coursesCol.findOne({ slug: 'java' });
+        const course = await coursesCol.findOne({ slug: courseSlug });
         if (!course) {
-            console.error('❌ Course java not found');
+            console.error(`❌ Course ${courseSlug} not found`);
             return;
         }
         const courseId = course._id;
@@ -88,7 +90,7 @@ async function seedModule(options) {
                 items: [],
             };
             await coursesCol.updateOne({ _id: courseId }, { $push: { modules: mod } });
-            console.log('✅ Created module:', moduleTitle);
+            console.log(`✅ Created module in ${courseSlug}:`, moduleTitle);
         }
 
         const moduleId = mod._id;
@@ -97,20 +99,20 @@ async function seedModule(options) {
         lessons.forEach((L, i) => {
             let s = embedded.find((x) => x.title === L.title);
             if (!s) {
-                s = { _id: new ObjectId(), moduleId, courseId, order: i + 1, type: 'lesson', title: L.title, duration: L.duration || '30 min', language: 'java' };
+                s = { _id: new ObjectId(), moduleId, courseId, order: i + 1, type: 'lesson', title: L.title, duration: L.duration || '30 min', language };
                 embedded.push(s);
             }
             stubs.push({ ...L, _id: s._id, order: i + 1 });
         });
 
         const toEmbed = [];
-        const items = [];
+        const items = (options.nested) ? [{ type: 'lesson', title: moduleTitle }] : [];
 
         for (let i = 0; i < stubs.length; i++) {
             const L = stubs[i];
             const duration = L.duration || '30 min';
-            const secs = L.sections || defaultSections(L.title);
-            const { content, checkpoints } = buildLessonContent(label, L.title, duration, secs);
+            const secs = L.sections || defaultSections(L.title, language);
+            const { content, checkpoints } = buildLessonContent(label, L.title, duration, secs, language);
             const validationCriteria = L.validation || defaultValidation(checkpoints, L.title);
 
             const doc = {
@@ -121,10 +123,10 @@ async function seedModule(options) {
                 type: 'lesson',
                 title: L.title,
                 duration,
-                language: 'java',
+                language,
                 isTerminal: false,
-                fileName: L.fileName || 'Main.java',
-                starterCode: L.starterCode || MAIN,
+                fileName: L.fileName || (language === 'java' ? 'Main.java' : 'index.html'),
+                starterCode: L.starterCode || (language === 'java' ? MAIN : '<!DOCTYPE html>\n<html>\n<head>\n<title>Page Title</title>\n</head>\n<body>\n\n<h1>This is a Heading</h1>\n<p>This is a paragraph.</p>\n\n</body>\n</html>'),
                 content,
                 validationCriteria,
             };
@@ -138,9 +140,11 @@ async function seedModule(options) {
                 type: 'lesson',
                 title: L.title,
                 duration,
-                language: 'java',
+                language,
             });
-            items.push({ type: 'lesson', title: L.title });
+            if (!options.nested) {
+                items.push({ type: 'lesson', title: L.title });
+            }
         }
 
         await coursesCol.updateOne(
@@ -166,22 +170,21 @@ async function seedModule(options) {
     }
 }
 
-function defaultSections(title) {
+function defaultSections(title, language = 'java') {
+    const langLabel = language.toUpperCase();
     return [
-        { type: 'section', title: '1. Overview', text: `${title} is a core Java topic. Master the syntax, then practice edge cases and JVM behavior at an intermediate level.` },
-        { type: 'section', title: '2. Key ideas', list: ['Read compiler errors literally.', 'Prefer clarity over clever one-liners.', 'Match braces and indent consistently.'] },
-        { type: 'section', title: '3. Quick reference', code: '// Practice in main()\nSystem.out.println("OK");' },
-        { type: 'section', title: '4. Pro tips', text: 'Combine with debugging: print state before/after; unit-test boundary values.' },
-        { type: 'task', value: `<strong>Task 1</strong><br/>Print a line containing <code class="font-mono">Lesson: ${title.replace(/"/g, '')}</code> from <code class="font-mono">main</code>.`, hints: ['Use println with string literal.'], points: 5 },
-        { type: 'task', value: '<strong>Task 2</strong><br/>Declare <code class="font-mono">int x = 42</code> and print <code class="font-mono">Answer: 42</code>.', hints: ['int x = 42; System.out.println("Answer: " + x);'], points: 5 },
+        { type: 'section', title: '1. Overview', text: `${title} is a core ${langLabel} topic. Master the syntax, then practice edge cases and best practices.` },
+        { type: 'section', title: '2. Key ideas', list: [`Read official ${langLabel} docs for this topic.`, 'Write small experiments.', 'Verify the output.'] },
+        { type: 'section', title: '3. Quick reference', code: language === 'java' ? '// Practice in main()\nSystem.out.println("OK");' : '<!-- Practice here -->\n<p>Hello World</p>' },
+        { type: 'section', title: '4. Pro tips', text: 'Focus on clean code and accessibility.' },
+        { type: 'task', value: `<strong>Task 1</strong><br/>Implement a basic experiment for <code class="font-mono">${title.replace(/"/g, '')}</code>.`, hints: ['Refer to the quick reference.'], points: 5 },
     ];
 }
 
 function defaultValidation(n, title) {
     const safe = title.replace(/[.*+?^${}()|[\]\\]/g, '').slice(0, 20);
     return [
-        { index: 1, match: `Lesson:\\s*${safe}|Lesson:`, matchCode: 'println' },
-        { index: 2, match: 'Answer:\\s*42', matchCode: '42' },
+        { index: 1, match: `.*`, matchCode: '.*' },
     ].slice(0, n);
 }
 

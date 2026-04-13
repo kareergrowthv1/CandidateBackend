@@ -1,0 +1,443 @@
+HTML & CSS COURSE STRUCTURE
+============================
+
+1. Introduction to HTML
+   - What is HTML?
+   - How the Web Works
+   - HTML File Structure
+   - HTML Document Anatomy
+   - Your First HTML Page
+   - HTML Tags and Elements
+   - Types of HTML Tags
+   - HTML Attributes
+   - Comments in HTML
+   - HTML Best Practices
+
+------------------------------------------------
+
+2. Basic HTML Structure
+   - <!DOCTYPE html> Declaration
+   - <html> Tag
+   - <head> Section
+   - <title> Tag
+   - <body> Tag
+   - Meta Tags
+   - Page Metadata
+   - HTML Document Layout
+
+------------------------------------------------
+
+3. HTML Text & Formatting
+   - Headings (h1 to h6)
+   - Paragraphs
+   - Bold (b, strong)
+   - Italic (i, em)
+   - Underline (u)
+   - Line Break (br)
+   - Horizontal Rule (hr)
+   - Superscript
+   - Subscript
+   - Mark Tag
+   - Small Tag
+   - Preformatted Text (pre)
+
+------------------------------------------------
+
+4. HTML Lists
+   - Introduction to Lists
+   - Unordered List (ul)
+   - Ordered List (ol)
+   - List Item (li)
+   - Nested Lists
+   - Description List (dl)
+   - Description Term (dt)
+   - Description Definition (dd)
+
+------------------------------------------------
+
+5. HTML Links
+   - Introduction to Links
+   - Anchor Tag (a)
+   - Internal Links
+   - External Links
+   - Opening Links in New Tab
+   - Linking to Email
+   - Linking to Phone
+   - Bookmark Links (id attribute)
+
+------------------------------------------------
+
+6. HTML Images
+   - Adding Images (img tag)
+   - src and alt Attributes
+   - Width and Height
+   - Image Paths (Relative vs Absolute)
+   - Responsive Images
+   - Image as Link
+   - Favicon
+
+------------------------------------------------
+
+7. HTML Media
+   - Audio Tag
+   - Video Tag
+   - iframe (Embedding External Content)
+   - Embedding YouTube Videos
+
+------------------------------------------------
+
+8. HTML Tables
+   - Introduction to Tables
+   - Table Structure (table, tr, td, th)
+   - Table Headings
+   - Table Borders
+   - colspan Attribute
+   - rowspan Attribute
+   - Table Caption
+   - thead
+   - tbody
+   - tfoot
+   - Styling a Table
+
+------------------------------------------------
+
+9. HTML Forms
+   - Introduction to Forms
+   - form Tag and action Attribute
+   - Input Types (text, password, email, number)
+   - Radio Buttons
+   - Checkboxes
+   - Dropdown (select and option)
+   - Textarea
+   - Submit Button
+   - Reset Button
+   - Placeholder Attribute
+   - Required Attribute
+   - maxlength Attribute
+   - Basic Form Validation
+   - label Tag
+
+------------------------------------------------
+
+10. HTML Semantic Elements
+   - What are Semantic Elements?
+   - header
+   - nav
+   - main
+   - section
+   - article
+   - aside
+   - footer
+   - figure
+   - figcaption
+   - Why Semantics Matter (SEO and Accessibility)
+
+------------------------------------------------
+
+11. HTML5 Advanced Elements
+   - details
+   - summary
+   - progress
+   - meter
+   - time
+   - Data Attributes
+   - HTML5 Input Types
+
+------------------------------------------------
+
+12. HTML Head and Meta
+   - head Tag
+   - title Tag
+   - meta charset
+   - meta viewport
+   - meta description
+   - meta keywords
+   - Linking CSS Files
+   - Linking JavaScript Files
+
+------------------------------------------------
+
+13. Introduction to CSS
+   - What is CSS?
+   - How CSS Works with HTML
+   - CSS Syntax (selector, property, value)
+   - CSS Rules
+   - CSS Comments
+   - Inline CSS
+   - Internal CSS
+   - External CSS
+   - Linking CSS to HTML
+
+------------------------------------------------
+
+14. CSS Selectors
+   - Element Selector
+   - Class Selector
+   - ID Selector
+   - Universal Selector
+   - Group Selector
+   - Descendant Selector
+   - Child Selector
+   - Attribute Selector
+   - Pseudo-class Selector (:hover, :focus, :nth-child)
+   - Pseudo-element Selector (::before, ::after)
+
+------------------------------------------------
+
+15. CSS Colors and Backgrounds
+   - Color Names
+   - HEX Colors
+   - RGB Colors
+   - RGBA Colors
+   - HSL Colors
+   - HSLA Colors
+   - Background Color
+   - Background Image
+   - Background Repeat
+   - Background Position
+   - Background Size
+   - Background Shorthand
+
+------------------------------------------------
+
+16. CSS Text and Fonts
+   - font-family
+   - font-size
+   - font-weight
+   - font-style
+   - text-align
+   - text-decoration
+   - text-transform
+   - line-height
+   - letter-spacing
+   - word-spacing
+   - Google Fonts
+
+------------------------------------------------
+
+17. CSS Box Model
+   - What is the Box Model?
+   - Content
+   - Padding
+   - Border
+   - Margin
+   - Width and Height
+   - box-sizing Property
+   - Outline vs Border
+
+------------------------------------------------
+
+18. CSS Display and Visibility
+   - display: block
+   - display: inline
+   - display: inline-block
+   - display: none
+   - visibility: hidden
+   - opacity
+
+------------------------------------------------
+
+19. CSS Position
+   - position: static
+   - position: relative
+   - position: absolute
+   - position: fixed
+   - position: sticky
+   - z-index
+
+------------------------------------------------
+
+20. CSS Units
+   - Absolute Units (px, cm, mm)
+   - Relative Units (%, em, rem)
+   - Viewport Units (vw, vh)
+   - When to Use Which Unit
+
+------------------------------------------------
+
+21. CSS Borders and Shadows
+   - border-style
+   - border-width
+   - border-color
+   - border-radius
+   - box-shadow
+   - text-shadow
+
+------------------------------------------------
+
+22. CSS Flexbox
+   - Introduction to Flexbox
+   - flex-container and flex-items
+   - flex-direction
+   - justify-content
+   - align-items
+   - align-self
+   - align-content
+   - flex-wrap
+   - gap
+   - flex-grow
+   - flex-shrink
+   - flex-basis
+   - Flexbox Practical Layout
+
+------------------------------------------------
+
+23. CSS Grid
+   - Introduction to Grid
+   - grid-template-columns
+   - grid-template-rows
+   - grid-gap
+   - grid-column
+   - grid-row
+   - span
+   - grid-area
+   - justify-items
+   - align-items
+   - Grid Practical Layout
+
+------------------------------------------------
+
+24. CSS Transforms
+   - translate()
+   - rotate()
+   - scale()
+   - skew()
+   - 2D Transform
+   - 3D Transform
+   - transform-origin
+
+------------------------------------------------
+
+25. CSS Transitions
+   - What is a Transition?
+   - transition-property
+   - transition-duration
+   - transition-timing-function
+   - transition-delay
+   - Transition Shorthand
+
+------------------------------------------------
+
+26. CSS Animations
+   - What is a CSS Animation?
+   - @keyframes Rule
+   - animation-name
+   - animation-duration
+   - animation-iteration-count
+   - animation-direction
+   - animation-timing-function
+   - Animation Shorthand
+
+------------------------------------------------
+
+27. CSS Pseudo-classes and Pseudo-elements
+   - :hover
+   - :active
+   - :focus
+   - :first-child
+   - :last-child
+   - :nth-child
+   - :not()
+   - ::before
+   - ::after
+   - ::placeholder
+   - ::selection
+
+------------------------------------------------
+
+28. CSS Variables (Custom Properties)
+   - Declaring Variables with --variable-name
+   - Using var()
+   - Scope of CSS Variables
+   - Changing Variables with JavaScript
+
+------------------------------------------------
+
+29. CSS Overflow and Clipping
+   - overflow: visible
+   - overflow: hidden
+   - overflow: scroll
+   - overflow: auto
+   - overflow-x
+   - overflow-y
+   - clip-path
+
+------------------------------------------------
+
+30. CSS Responsive Design
+   - What is Responsive Design?
+   - viewport meta tag
+   - Media Queries (@media)
+   - Breakpoints
+   - Mobile First vs Desktop First
+   - Fluid Layout
+   - Responsive Images
+   - Responsive Videos
+   - Responsive Typography
+
+------------------------------------------------
+
+31. CSS Specificity and Cascade
+   - What is Specificity?
+   - Specificity Hierarchy (inline > id > class > element)
+   - The Cascade Rule
+   - !important (and when NOT to use it)
+   - Inheritance in CSS
+
+------------------------------------------------
+
+32. Advanced CSS Concepts
+   - CSS Variables
+   - Custom Properties
+   - Z-index
+   - Overflow Property
+   - Visibility Property
+   - Object Fit
+   - Clip Path
+
+------------------------------------------------
+
+33. Modern CSS Techniques
+   - Gradient Backgrounds
+   - Glassmorphism
+   - CSS Filters
+   - Backdrop Filter
+   - CSS Clamp Function
+
+------------------------------------------------
+
+34. CSS Architecture
+   - Writing Maintainable CSS
+   - BEM Naming Convention
+   - Utility Classes
+   - CSS File Organization
+
+------------------------------------------------
+
+35. Performance Optimization
+   - Minifying CSS
+   - Reducing CSS File Size
+   - Efficient Selectors
+   - Critical CSS
+
+------------------------------------------------
+
+36. CSS Practical Projects
+   - Navigation Bar
+   - Card Layout
+   - Responsive Grid Page
+   - Login Form UI
+   - Full Page Layout (Header, Sidebar, Content, Footer)
+
+------------------------------------------------
+
+37. Real Website Structure
+   - Page Layout Planning
+   - Header Design
+   - Navigation Bar
+   - Hero Section
+   - Content Sections
+   - Footer Design
+   - Responsive Website Layout
+
+------------------------------------------------

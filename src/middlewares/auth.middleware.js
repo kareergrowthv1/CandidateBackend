@@ -22,18 +22,40 @@ const authMiddleware = (req, res, next) => {
             return next();
         }
 
+        let emailFromToken = null;
         const authHeader = req.headers.authorization || req.headers.Authorization;
+        let tokenSource = null;
+        let token = null;
         if (authHeader && String(authHeader).startsWith('Bearer ')) {
-            const token = String(authHeader).slice(7).trim();
+            const rawToken = String(authHeader).slice(7).trim();
+            if (rawToken && rawToken !== 'null' && rawToken !== 'undefined') {
+                token = rawToken;
+                tokenSource = 'header';
+            }
+        } 
+        
+        if (!token && req.cookies && req.cookies.accessToken) {
+            token = req.cookies.accessToken;
+            tokenSource = 'cookie';
+        }
+
+        if (token) {
             const secret = process.env.JWT_SECRET;
             if (secret) {
                 try {
                     const decoded = jwt.verify(token, secret);
+                    console.log(`[CandidateBackend] Auth Success via ${tokenSource} for user:`, decoded.userId || decoded.sub);
                     userId = decoded.userId || decoded.sub || decoded.id;
                     userRole = decoded.roleName || decoded.roleCode || decoded.role;
                     organizationId = decoded.organizationId || decoded.organization_id;
                     client = client || decoded.tenantDb || decoded.tenantId || decoded.client;
+                    emailFromToken = decoded.sub || decoded.email;
                 } catch (e) {
+                    console.error('[CandidateBackend] JWT Error:', e.message, {
+                        source: tokenSource,
+                        tokenStart: token?.substring(0, 15),
+                        secretLength: secret?.length
+                    });
                     return res.status(401).json({ success: false, message: 'Invalid or expired token.' });
                 }
             }
@@ -48,6 +70,7 @@ const authMiddleware = (req, res, next) => {
 
         req.user = {
             id: userId,
+            email: emailFromToken,
             role: userRole,
             organizationId: organizationId,
             client: client
