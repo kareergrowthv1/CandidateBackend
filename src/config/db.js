@@ -17,4 +17,28 @@ const pool = mysql.createPool({
   charset: 'utf8mb4',
 });
 
-module.exports = { pool, DB_NAME };
+// Auth pool for users/roles/organizations (auth_db)
+const authPool = mysql.createPool({
+  host: process.env.DB_HOST,
+  port: parseInt(process.env.DB_PORT, 10),
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: 'auth_db',
+  waitForConnections: true,
+  connectionLimit: 5,
+  queueLimit: 0,
+  charset: 'utf8mb4',
+});
+
+/** Run a query against auth_db (users, roles, organizations, permissions). */
+const authQuery = async (sql, params = []) => {
+  const connection = await authPool.getConnection();
+  try {
+    const [rows] = await connection.query(sql, params);
+    return rows;
+  } finally {
+    connection.release();
+  }
+};
+
+module.exports = { pool, DB_NAME, authPool, authQuery };

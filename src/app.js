@@ -1,19 +1,26 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-const dotenv = require('dotenv');
+const cookieParser = require('cookie-parser');
 const candidatesRoutes = require('./routes/candidates');
 const codingPracticeRoutes = require('./routes/coding-practice');
 const runCodeRoutes = require('./routes/run-code');
 const dailyQuizRoutes = require('./routes/daily-quiz');
 const knowledgeBaseRoutes = require('./routes/knowledge-base');
 const programmingRoutes = require('./routes/programmingRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
+const aiMockRoutes = require('./routes/aiMockRoutes');
+const resumeRoutes = require('./routes/resumeRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
+const candidateStatusRoutes = require('./routes/candidateStatus');
+const assessmentSummaryRoutes = require('./routes/assessmentSummary');
+const interviewResponsesRoutes = require('./routes/interviewResponses');
+
 const authMiddleware = require('./middlewares/auth.middleware');
 const tenantMiddleware = require('./middlewares/tenant.middleware');
 const { pool, DB_NAME } = require('./config/db');
 const { startQuizCron } = require('./cron/quizCron');
-
-dotenv.config();
 
 const app = express();
 
@@ -42,60 +49,12 @@ app.use(cors({
 }));
 app.use(morgan('dev'));
 app.use(express.json());
+app.use(cookieParser());
 const path = require('path');
 app.use('/public', express.static(path.join(__dirname, '../public')));
 
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'Candidate Backend is healthy' });
-});
-
-/**
- * GET /candidates/check-mail?email=...&organizationId=...
- * Registered at app level so path is always matched (avoids 404 from router ordering).
- */
-app.get('/candidates/check-mail', authMiddleware, tenantMiddleware, async (req, res) => {
-  const email = (req.query.email || '').toString().trim();
-  const organizationId = (req.query.organizationId || req.headers['x-organization-id'] || '').toString().trim();
-  if (!email) {
-    return res.status(400).json({ success: false, message: 'email is required' });
-  }
-  try {
-    const dbName = DB_NAME || process.env.CANDIDATE_DB_NAME;
-    if (!dbName) {
-      return res.status(500).json({ success: false, message: 'CANDIDATE_DB_NAME not configured' });
-    }
-
-    let query = `SELECT candidate_id as id, candidate_code as code, candidate_name as name, email, mobile_number as mobileNumber
-                 FROM \`${dbName}\`.college_candidates
-                 WHERE LOWER(TRIM(email)) = LOWER(?)`;
-    const params = [email];
-
-    if (organizationId) {
-      query += ` AND organization_id = ?`;
-      params.push(organizationId);
-    }
-
-    query += ` LIMIT 1`;
-
-    const [rows] = await pool.query(query, params);
-    const row = rows && rows[0];
-    if (!row) {
-      return res.status(200).json({ success: false, data: null });
-    }
-    return res.status(200).json({
-      success: true,
-      data: {
-        id: row.id,
-        code: row.code,
-        name: row.name,
-        email: row.email,
-        mobileNumber: row.mobileNumber || ''
-      }
-    });
-  } catch (err) {
-    console.error('check-mail error:', err);
-    return res.status(500).json({ success: false, message: err.message || 'Check failed' });
-  }
 });
 
 app.use('/candidates', candidatesRoutes);
@@ -104,6 +63,14 @@ app.use('/run-code', runCodeRoutes);
 app.use('/api/daily-quiz', dailyQuizRoutes);
 app.use('/api/knowledge-base', knowledgeBaseRoutes);
 app.use('/api/programming', programmingRoutes);
+app.use('/payments', paymentRoutes);
+app.use('/api/ai-mock', aiMockRoutes);
+app.use('/api/resume', resumeRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/candidate-status', candidateStatusRoutes);
+app.use('/candidate', tenantMiddleware, assessmentSummaryRoutes);
+app.use('/candidate', tenantMiddleware, interviewResponsesRoutes);
+
 
 // Start daily quiz cron job (generates quiz at midnight every day)
 startQuizCron();
@@ -111,7 +78,12 @@ startQuizCron();
 app.use((err, req, res, next) => {
   console.error(err.stack);
   const status = err.status || 500;
-  res.status(status).json({ error: err.message || 'Something went wrong!' });
+  res.status(status).json({ 
+    success: false,
+    error: err.message || 'Something went wrong!',
+    type: err.name || 'Error',
+    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined 
+  });
 });
 
 module.exports = app;

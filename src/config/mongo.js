@@ -20,6 +20,12 @@ const COLLECTIONS = {
   APTITUDE_RESPONSES: 'candidate_interview_aptitude_responses',
   CODING_PRACTICE: 'Coding_Practice',
   CODING_RESPONSE: 'CodingResponse',
+  AIMOCK_RESPONSES: 'aimock',
+  RESUME_REPORTS: 'candidatesresumereport',
+  RESUME_TEMPLATES: 'sql',
+  NOTIFICATIONS: 'notifications',
+  NOTIFICATION_DISMISSALS: 'notification_dismissals',
+  FAKE_OFFER_RESPONSES: 'fakeoffer_responses',
 };
 
 const KB_COLLECTIONS = {

@@ -2,13 +2,15 @@
   "name": "CandidateBackend",
   "version": "1.0.0",
   "main": "src/server.js",
-    "scripts": {
+  "scripts": {
     "start": "node src/server.js",
-    "dev": "node src/server.js",
-    "seed:m04": "node scripts/seed/m04_conditional_statements.js"
+    "dev": "npx nodemon src/server.js",
+    "seed:m04": "node scripts/seed/m04_conditional_statements.js",
+    "seed:html": "node scripts/html/html_seed.js"
   },
   "dependencies": {
     "axios": "^1.13.6",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
@@ -20,6 +22,7 @@
     "mysql2": "^3.6.5",
     "node-cron": "^4.2.1",
     "pdf-parse": "^1.1.1",
+    "razorpay": "^2.9.6",
     "redis": "^5.11.0",
     "uuid": "^9.0.1"
   }

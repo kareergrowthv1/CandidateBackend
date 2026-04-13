@@ -78,40 +78,48 @@ async function seedOopJavaModule() {
 
                 { type: 'section_heading', value: '1. Why OOP fits Java' },
                 { type: 'text', value: 'Large programs become hard to change when everything lives in one giant main(). Object-oriented programming splits the program into types (classes). Each class owns a small amount of data and the operations that make sense for that data.' },
-                { type: 'list', value: [
-                    '<strong>Class</strong> — blueprint: fields + methods.',
-                    '<strong>Object / instance</strong> — one runtime thing from <code class="font-mono bg-gray-100 px-1">new</code>.',
-                    '<strong>State vs behavior</strong> — fields hold state; methods implement behavior.',
-                ]},
+                {
+                    type: 'list', value: [
+                        '<strong>Class</strong> — blueprint: fields + methods.',
+                        '<strong>Object / instance</strong> — one runtime thing from <code class="font-mono bg-gray-100 px-1">new</code>.',
+                        '<strong>State vs behavior</strong> — fields hold state; methods implement behavior.',
+                    ]
+                },
 
                 { type: 'section_heading', value: '2. Class vs object (table)' },
-                { type: 'rich_text', value: TABLE_WRAP(`
+                {
+                    type: 'rich_text', value: TABLE_WRAP(`
         <thead><tr class="bg-gray-50/80 border-b"><th class="px-6 py-3 text-left font-semibold border-r">Idea</th><th class="px-6 py-3 text-left font-semibold border-r">Class</th><th class="px-6 py-3 text-left font-semibold">Object</th></tr></thead>
         <tbody class="divide-y">
             <tr><td class="px-6 py-3 border-r font-bold bg-gray-50/30">Role</td><td class="px-6 py-3 border-r">Blueprint</td><td class="px-6 py-3">One instance</td></tr>
             <tr><td class="px-6 py-3 border-r font-bold bg-gray-50/30">In code</td><td class="px-6 py-3 border-r font-mono">class Name { }</td><td class="px-6 py-3 font-mono">new Name(...)</td></tr>
-        </tbody>`) },
+        </tbody>`)
+                },
 
                 { type: 'section_heading', value: '3. How objects exist in memory (very important)' },
                 { type: 'text', value: 'When you write Bicycle b1 = new Bicycle("Green", 18); two ideas appear: a reference variable and a real object.' },
                 { type: 'code_block', language: 'text', value: 'Stack memory              Heap memory\n--------                  ------------\nb1  ------------------>   Bicycle object\n(reference)                color = "Green"\n                            gears = 18' },
-                { type: 'list', value: [
-                    '<strong>b1</strong> is a <strong>reference variable</strong> (lives on the stack in typical JVM diagrams). It stores an address (or handle) to the object.',
-                    'The <strong>actual object</strong> (fields + method table) lives in the <strong>heap</strong>.',
-                    '<strong>Multiple references</strong> can point to different objects — or the same object if you assign b2 = b1.',
-                    'This picture helps later: <strong>references</strong>, <strong>garbage collection</strong> (no references → reclaim), <strong>passing objects</strong> (you pass the reference).',
-                ]},
+                {
+                    type: 'list', value: [
+                        '<strong>b1</strong> is a <strong>reference variable</strong> (lives on the stack in typical JVM diagrams). It stores an address (or handle) to the object.',
+                        'The <strong>actual object</strong> (fields + method table) lives in the <strong>heap</strong>.',
+                        '<strong>Multiple references</strong> can point to different objects — or the same object if you assign b2 = b1.',
+                        'This picture helps later: <strong>references</strong>, <strong>garbage collection</strong> (no references → reclaim), <strong>passing objects</strong> (you pass the reference).',
+                    ]
+                },
 
                 { type: 'section_heading', value: '4. Access modifiers (preview)' },
                 { type: 'text', value: 'Java controls who can read or write fields and who can call methods.' },
-                { type: 'rich_text', value: TABLE_WRAP(`
+                {
+                    type: 'rich_text', value: TABLE_WRAP(`
         <thead><tr class="bg-gray-50 border-b"><th class="px-6 py-3 text-left border-r font-semibold">Modifier</th><th class="px-6 py-3 text-left">Accessible from</th></tr></thead>
         <tbody>
             <tr><td class="px-6 py-3 border-r font-mono">public</td><td class="px-6 py-3">Everywhere</td></tr>
             <tr><td class="px-6 py-3 border-r font-mono">private</td><td class="px-6 py-3">Inside the same class only</td></tr>
             <tr><td class="px-6 py-3 border-r font-mono">protected</td><td class="px-6 py-3">Subclass + same package</td></tr>
             <tr><td class="px-6 py-3 border-r font-mono">(default)</td><td class="px-6 py-3">Same package only</td></tr>
-        </tbody>`) },
+        </tbody>`)
+                },
                 { type: 'text', value: 'Best practice for fields: prefer private so the outside world cannot change state blindly. Full encapsulation (getters/setters, validation) comes in a later module — but you should see private fields early.' },
                 { type: 'code_block', language: 'java', value: 'private String color;\nprivate int gears;' },
 
@@ -125,21 +133,25 @@ async function seedOopJavaModule() {
 
                 { type: 'section_heading', value: '7. Object equality: == vs .equals()' },
                 { type: 'text', value: 'Beginners often compare objects with ==. That only compares references (same object in memory?), not field values.' },
-                { type: 'list', value: [
-                    '<strong>==</strong> → same reference?',
-                    '<strong>.equals()</strong> → logical equality (especially for String and types you design).',
-                ]},
+                {
+                    type: 'list', value: [
+                        '<strong>==</strong> → same reference?',
+                        '<strong>.equals()</strong> → logical equality (especially for String and types you design).',
+                    ]
+                },
                 { type: 'code_block', language: 'java', value: 'String a = "Java";\nString b = "Java";\nSystem.out.println(a.equals(b)); // true — content\n// a == b may be true for string literals (pooling) but don\'t rely on == for String content' },
 
                 { type: 'section_heading', value: '8. Constructor vs method (comparison)' },
-                { type: 'rich_text', value: TABLE_WRAP(`
+                {
+                    type: 'rich_text', value: TABLE_WRAP(`
         <thead><tr class="bg-gray-50 border-b"><th class="px-6 py-3 text-left border-r font-semibold">Constructor</th><th class="px-6 py-3 text-left font-semibold">Method</th></tr></thead>
         <tbody>
             <tr><td class="px-6 py-3 border-r">Same name as class</td><td class="px-6 py-3">Any valid name</td></tr>
             <tr><td class="px-6 py-3 border-r">No return type (not even void)</td><td class="px-6 py-3">Must declare return type or void</td></tr>
             <tr><td class="px-6 py-3 border-r">Runs when <code class="font-mono">new</code> runs</td><td class="px-6 py-3">Runs when you call it</td></tr>
             <tr><td class="px-6 py-3 border-r">Called via <code class="font-mono">new ClassName(...)</code></td><td class="px-6 py-3">Called via <code class="font-mono">object.method(...)</code> or static</td></tr>
-        </tbody>`) },
+        </tbody>`)
+                },
 
                 { type: 'section_heading', value: '9. Immutability (short note)' },
                 { type: 'text', value: 'String objects are immutable: once created, their characters do not change. When you write s = s + " Course"; you create a new String and s points to it; the old one may be garbage-collected if nothing else references it.' },
@@ -154,11 +166,13 @@ async function seedOopJavaModule() {
                 { type: 'code_block', language: 'java', value: 'Point p1 = new Point(1, 2);\nPoint p2 = new Point(10, 20);\np1.print();\np2.print();' },
 
                 { type: 'section_heading', value: '12. Bicycle — common mistakes' },
-                { type: 'list', value: [
-                    'Class name ≠ file name.',
-                    'ride() needs an object: b.ride() in main.',
-                    'Constructor name = class name; no return type.',
-                ]},
+                {
+                    type: 'list', value: [
+                        'Class name ≠ file name.',
+                        'ride() needs an object: b.ride() in main.',
+                        'Constructor name = class name; no return type.',
+                    ]
+                },
 
                 { type: 'section_heading', value: 'Instructions' },
                 { type: 'checkpoint', index: 1, points: 5, value: '<strong>Task 1</strong><br/><code class="font-mono">Bicycle</code> has private fields <code class="font-mono">color</code> and <code class="font-mono">gears</code> (or package-private if you prefer for this exercise).', content: [H({ type: 'text', value: 'private String color; private int gears;' })] },
@@ -199,11 +213,13 @@ async function seedOopJavaModule() {
                 { type: 'text', value: 'After Intro, we focus on object birth: new allocates heap space; constructor initializes. Order: memory → default ctor → this → chaining → tasks.' },
 
                 { type: 'section_heading', value: '1. What runs when you write new?' },
-                { type: 'list', value: [
-                    'Heap: space for the object.',
-                    'Fields default (0, false, null) then constructor body.',
-                    'Reference returned to caller (stack or field).',
-                ]},
+                {
+                    type: 'list', value: [
+                        'Heap: space for the object.',
+                        'Fields default (0, false, null) then constructor body.',
+                        'Reference returned to caller (stack or field).',
+                    ]
+                },
 
                 { type: 'section_heading', value: '2. Default constructor' },
                 { type: 'text', value: 'Zero constructors written → Java adds invisible public Book(). First custom constructor → default removed unless you add Book() yourself.' },
@@ -250,15 +266,19 @@ async function seedOopJavaModule() {
                 { type: 'code_block', language: 'java', value: 'public int add(int a, int b) { return a + b; }' },
 
                 { type: 'section_heading', value: '2. void vs return' },
-                { type: 'rich_text', value: TABLE_WRAP(`
+                {
+                    type: 'rich_text', value: TABLE_WRAP(`
         <thead><tr class="bg-gray-50 border-b"><th class="px-6 py-3 border-r">Return</th><th class="px-6 py-3">Meaning</th></tr></thead>
         <tbody><tr><td class="px-6 py-3 border-r font-mono">void</td><td class="px-6 py-3">No value back</td></tr>
-        <tr><td class="px-6 py-3 border-r font-mono">int, double, …</td><td class="px-6 py-3">Caller gets value</td></tr></tbody>`) },
+        <tr><td class="px-6 py-3 border-r font-mono">int, double, …</td><td class="px-6 py-3">Caller gets value</td></tr></tbody>`)
+                },
 
                 { type: 'section_heading', value: '3. Instance vs static' },
-                { type: 'rich_text', value: TABLE_WRAP(`
+                {
+                    type: 'rich_text', value: TABLE_WRAP(`
         <thead><tr class="bg-gray-50 border-b"><th class="px-6 py-3 border-r">Instance</th><th class="px-6 py-3">static</th></tr></thead>
-        <tbody><tr><td class="px-6 py-3 border-r">c.add(1,2)</td><td class="px-6 py-3">greet("x")</td></tr></tbody>`) },
+        <tbody><tr><td class="px-6 py-3 border-r">c.add(1,2)</td><td class="px-6 py-3">greet("x")</td></tr></tbody>`)
+                },
 
                 { type: 'section_heading', value: 'Instructions' },
                 { type: 'checkpoint', index: 1, points: 8, value: '<strong>Task 1</strong><br/><code class="font-mono">Sum: 30</code> via <code class="font-mono">add(10,20)</code>.', content: [H({ type: 'code_block', language: 'java', value: 'System.out.println("Sum: " + c.add(10, 20));' })] },

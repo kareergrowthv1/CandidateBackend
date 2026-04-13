@@ -100,4 +100,104 @@ router.get('/item/:topicSlug/:itemId', async (req, res) => {
     }
 });
 
+/**
+ * GET /api/knowledge-base/search?q=loops
+ * Full-text search across all topic collections.
+ * Searches: topic title, content item title, and subItem titles.
+ * Returns up to top 5 matches with navigation info.
+ */
+router.get('/search', async (req, res) => {
+    const q = (req.query.q || '').trim();
+    if (!q || q.length < 2) {
+        return res.json({ success: true, data: [] });
+    }
+
+    try {
+        const topicsCol = await getKbCollection(KB_COLLECTIONS.TOPICS);
+        const allTopics = await topicsCol.find({}, { projection: { _id: 1, title: 1, slug: 1 } }).toArray();
+
+        const regex = new RegExp(q, 'i');
+        const results = [];
+
+        // Search each topic's collection in parallel
+        await Promise.all(allTopics.map(async (topic) => {
+            try {
+                const col = await getKbCollection(topic.slug);
+
+                // 1. Match on main content title
+                const titleMatches = await col.find(
+                    { title: { $regex: regex } },
+                    { projection: { _id: 1, title: 1, slug: 1, subItems: 1 } }
+                ).limit(5).toArray();
+
+                for (const item of titleMatches) {
+                    results.push({
+                        type: 'content',
+                        topicSlug: topic.slug,
+                        topicTitle: topic.title,
+                        itemId: item._id,
+                        itemSlug: item.slug,
+                        title: item.title,
+                        subtitle: topic.title,
+                        url: `/knowledge-base/${topic.slug}/${item.slug || item._id}`,
+                    });
+                }
+
+                // 2. Match on subItem titles (e.g. section headings like "What is Java?")
+                const subMatches = await col.find(
+                    { 'subItems.title': { $regex: regex } },
+                    { projection: { _id: 1, title: 1, slug: 1, subItems: 1 } }
+                ).limit(5).toArray();
+
+                for (const item of subMatches) {
+                    const matchingSubItems = (item.subItems || []).filter(s => regex.test(s.title));
+                    for (const sub of matchingSubItems) {
+                        // Avoid duplicate if main title already matched
+                        const alreadyAdded = results.some(r => r.type === 'content' && String(r.itemId) === String(item._id));
+                        results.push({
+                            type: 'subitem',
+                            topicSlug: topic.slug,
+                            topicTitle: topic.title,
+                            itemId: item._id,
+                            itemSlug: item.slug,
+                            title: sub.title,
+                            subtitle: `${topic.title} › ${item.title}`,
+                            url: `/knowledge-base/${topic.slug}/${String(item._id)}`,
+                        });
+                    }
+                }
+            } catch (e) {
+                // silently skip topics with no collection
+            }
+        }));
+
+        // Also search topic names themselves
+        const topicMatches = allTopics.filter(t => regex.test(t.title));
+        for (const t of topicMatches) {
+            results.unshift({
+                type: 'topic',
+                topicSlug: t.slug,
+                topicTitle: t.title,
+                title: t.title,
+                subtitle: 'Course',
+                url: `/knowledge-base/${t.slug}`,
+            });
+        }
+
+        // Deduplicate and cap at 5
+        const seen = new Set();
+        const deduped = results.filter(r => {
+            const key = `${r.topicSlug}:${r.title}`;
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+        });
+
+        return res.json({ success: true, data: deduped.slice(0, 5) });
+    } catch (err) {
+        console.error('knowledge-base/search error:', err);
+        return res.status(500).json({ success: false, message: 'Search failed' });
+    }
+});
+
 module.exports = router;
