@@ -18,6 +18,25 @@ const express = require('express');
 const router = express.Router();
 const { getCollection, COLLECTIONS } = require('../config/mongo');
 
+function idVariants(id) {
+  const raw = String(id || '').trim();
+  const compact = raw.replace(/-/g, '').toLowerCase();
+  const out = new Set([raw]);
+  if (compact.length === 32) {
+    const dashed = `${compact.slice(0, 8)}-${compact.slice(8, 12)}-${compact.slice(12, 16)}-${compact.slice(16, 20)}-${compact.slice(20)}`;
+    out.add(compact);
+    out.add(dashed);
+  }
+  return Array.from(out).filter(Boolean);
+}
+
+function candidatePositionQuery(candidateId, positionId) {
+  return {
+    candidateId: { $in: idVariants(candidateId) },
+    positionId: { $in: idVariants(positionId) },
+  };
+}
+
 // GET /candidate/interview-responses?candidateId=&positionId=
 router.get('/interview-responses', async (req, res) => {
   const { candidateId, positionId } = req.query;
@@ -26,7 +45,7 @@ router.get('/interview-responses', async (req, res) => {
   }
   try {
     const col = await getCollection(COLLECTIONS.INTERVIEW_RESPONSES);
-    const doc = await col.findOne({ candidateId, positionId }, { projection: { _id: 0 } });
+    const doc = await col.findOne(candidatePositionQuery(candidateId, positionId), { projection: { _id: 0 } });
     if (!doc) {
       return res.status(404).json({ success: false, message: 'Interview response not found' });
     }
@@ -45,7 +64,7 @@ router.post('/interview-responses', async (req, res) => {
   }
   try {
     const col = await getCollection(COLLECTIONS.INTERVIEW_RESPONSES);
-    const existing = await col.findOne({ candidateId, positionId }, { projection: { _id: 0 } });
+    const existing = await col.findOne(candidatePositionQuery(candidateId, positionId), { projection: { _id: 0 } });
     if (existing) {
       return res.status(200).json({ success: true, data: existing, message: 'Already exists' });
     }
@@ -60,7 +79,7 @@ router.post('/interview-responses', async (req, res) => {
       updatedAt: now,
     };
     await col.insertOne(doc);
-    const inserted = await col.findOne({ candidateId, positionId }, { projection: { _id: 0 } });
+    const inserted = await col.findOne(candidatePositionQuery(candidateId, positionId), { projection: { _id: 0 } });
     return res.status(201).json({ success: true, data: inserted, message: 'Created' });
   } catch (err) {
     console.error('[interview-responses] POST error:', err);
@@ -131,12 +150,12 @@ router.patch('/interview-responses', async (req, res) => {
     const updateOp = { $set };
     if ($push) updateOp.$push = $push;
 
-    const result = await col.updateOne({ candidateId, positionId }, updateOp);
+    const result = await col.updateOne(candidatePositionQuery(candidateId, positionId), updateOp);
     if (result.matchedCount === 0) {
       return res.status(404).json({ success: false, message: 'Interview response not found' });
     }
 
-    const updated = await col.findOne({ candidateId, positionId }, { projection: { _id: 0 } });
+    const updated = await col.findOne(candidatePositionQuery(candidateId, positionId), { projection: { _id: 0 } });
     return res.status(200).json({ success: true, data: updated });
   } catch (err) {
     console.error('[interview-responses] PATCH error:', err);
