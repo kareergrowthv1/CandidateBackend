@@ -9,12 +9,13 @@ const fs = require('fs');
 const https = require('https');
 const app = require('./app');
 const { initMongo } = require('./db/initMongo');
+const { initMysql } = require('./db/initMysql');
 
 const PORT = process.env.PORT;
 
 app.listen(PORT, async () => {
   console.log(`Candidate Backend running on port ${PORT}`);
-  // Initialize MongoDB: create collections + indexes on startup
+  await initMysql(); // Auto-create MySQL tables
   await initMongo();
 });
 
