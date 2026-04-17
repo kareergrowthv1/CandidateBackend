@@ -16,16 +16,20 @@ async function initMysql() {
   // candidate_subscriptions table
   await ensureTable('candidate_subscriptions', `
     CREATE TABLE candidate_subscriptions (
-      id INT AUTO_INCREMENT PRIMARY KEY,
+      id CHAR(36) PRIMARY KEY,
       candidate_id VARCHAR(36) NOT NULL,
-      subscription_type VARCHAR(50),
-      plan_name VARCHAR(100) DEFAULT NULL,
-      credits INT DEFAULT 0,
+      plan_id VARCHAR(50) NOT NULL,
+      plan_name VARCHAR(100) NOT NULL,
+      valid_from DATETIME DEFAULT NULL,
+      valid_till DATETIME DEFAULT NULL,
+      total_credits INT NOT NULL DEFAULT 0,
+      utilized_credits INT NOT NULL DEFAULT 0,
+      permissions JSON DEFAULT NULL,
       status VARCHAR(20) DEFAULT 'ACTIVE',
-      total_credits INT DEFAULT 0,
-      utilized_credits INT DEFAULT 0,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      created_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      KEY idx_candidate_id (candidate_id),
+      KEY idx_status (status)
     )
   `);
   // Add more ensureTable calls for other required tables here if needed
