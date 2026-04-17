@@ -18,6 +18,7 @@ const COLLECTIONS = {
   INTERVIEW_RESPONSES: 'candidate_interview_responses',
   CODING_RESPONSES: 'candidate_interview_coding_responses',
   APTITUDE_RESPONSES: 'candidate_interview_aptitude_responses',
+  ASSESSMENT_REPORTS: 'Candidates_Report',
   CODING_PRACTICE: 'Coding_Practice',
   CODING_RESPONSE: 'CodingResponse',
   AIMOCK_RESPONSES: 'aimock',

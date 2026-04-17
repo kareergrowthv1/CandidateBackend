@@ -29,6 +29,7 @@ async function ensureCollectionIndexes() {
   await ensureCollection(db, COLLECTIONS.INTERVIEW_RESPONSES);
   await ensureCollection(db, COLLECTIONS.CODING_RESPONSES);
   await ensureCollection(db, COLLECTIONS.APTITUDE_RESPONSES);
+  await ensureCollection(db, COLLECTIONS.ASSESSMENT_REPORTS);
   await ensureCollection(db, COLLECTIONS.AIMOCK_RESPONSES);
   await ensureCollection(db, COLLECTIONS.RESUME_TEMPLATES);
 
@@ -62,6 +63,15 @@ async function ensureCollectionIndexes() {
   const aimock = db.collection(COLLECTIONS.AIMOCK_RESPONSES);
   await aimock.createIndex({ candidateId: 1 }, { name: 'idx_candidate', background: true });
   await aimock.createIndex({ completedAt: -1, savedAt: -1 }, { name: 'idx_date', background: true });
+
+  // ── Assessment Reports (saved by Streaming AI via CandidateBackend API) ──
+  const reports = db.collection(COLLECTIONS.ASSESSMENT_REPORTS);
+  await reports.createIndex(
+    { positionId: 1, candidateId: 1 },
+    { unique: true, name: 'idx_pos_cand_uniq', background: true }
+  );
+  await reports.createIndex({ clientId: 1 }, { name: 'idx_client', background: true });
+  await reports.createIndex({ generatedAt: -1 }, { name: 'idx_generated', background: true });
 
   // Resume templates (sql collection in kareergrowth)
   const resumeTemplates = db.collection(COLLECTIONS.RESUME_TEMPLATES);
