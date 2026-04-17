@@ -162,12 +162,20 @@ exports.analyzeResume = async (req, res) => {
     }
 
     try {
-        // Call Streaming AI to analyze the resume
+        // Call Streaming AI to analyze the resume (correct endpoint)
         const aiResponse = await axios.post(
-            `${STREAMING_AI_URL}/resume/analyze`,
-            { resumeText, fileName, candidateId }
+            `${STREAMING_AI_URL}/resume-report/analyze`,
+            { resumeText, reportLevel: "standard" }
         );
-        const report = normalizeReportData(aiResponse.data);
+        // Extract the structured report
+        const report = aiResponse.data;
+
+        // Example: Insert content into a template (pseudo-code, adjust as needed)
+        // const template = await getTemplateForCandidate(candidateId);
+        // template.sections = report.sections;
+        // template.candidate_info = report.candidate_info;
+        // await saveTemplateForCandidate(candidateId, template);
+
         return res.status(200).json({ success: true, data: report });
     } catch (error) {
         console.error('Resume Analysis Error:', {
@@ -177,7 +185,7 @@ exports.analyzeResume = async (req, res) => {
             query: error.sql
         });
         return res.status(500).json({ 
-            success: false, 
+            success: false,
             message: 'Failed to analyze resume',
             error: error.message,
             stack: error.stack,
