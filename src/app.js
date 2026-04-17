@@ -23,6 +23,7 @@ const assessmentSummaryRoutes = require('./routes/assessmentSummary');
 const interviewResponsesRoutes = require('./routes/interviewResponses');
 const candidateCodingResponsesRoutes = require('./routes/candidateCodingResponses');
 const candidateAptitudeResponsesRoutes = require('./routes/candidateAptitudeResponses');
+const internalStreamingRoutes = require('./routes/internalStreaming');
 
 const authMiddleware = require('./middlewares/auth.middleware');
 const tenantMiddleware = require('./middlewares/tenant.middleware');
@@ -103,6 +104,7 @@ app.use('/candidate', tenantMiddleware, assessmentSummaryRoutes);
 app.use('/candidate', tenantMiddleware, interviewResponsesRoutes);
 app.use('/candidate-coding-responses', candidateCodingResponsesRoutes);
 app.use('/candidate-aptitude-responses', candidateAptitudeResponsesRoutes);
+app.use('/internal/streaming', internalStreamingRoutes);
 
 
 // Start daily quiz cron job (generates quiz at midnight every day)
