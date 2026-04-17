@@ -19,6 +19,7 @@ async function initMysql() {
       id INT AUTO_INCREMENT PRIMARY KEY,
       candidate_id VARCHAR(36) NOT NULL,
       subscription_type VARCHAR(50),
+      plan_name VARCHAR(100) DEFAULT NULL,
       credits INT DEFAULT 0,
       status VARCHAR(20) DEFAULT 'ACTIVE',
       total_credits INT DEFAULT 0,
