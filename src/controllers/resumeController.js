@@ -162,9 +162,12 @@ exports.analyzeResume = async (req, res) => {
     }
 
     try {
-        // ...existing code...
-        // (no change to main logic)
-        // ...existing code...
+        // Call Streaming AI to analyze the resume
+        const aiResponse = await axios.post(
+            `${STREAMING_AI_URL}/resume/analyze`,
+            { resumeText, fileName, candidateId }
+        );
+        const report = normalizeReportData(aiResponse.data);
         return res.status(200).json({ success: true, data: report });
     } catch (error) {
         console.error('Resume Analysis Error:', {
