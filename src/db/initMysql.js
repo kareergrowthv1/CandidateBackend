@@ -32,6 +32,20 @@ async function initMysql() {
       KEY idx_status (status)
     )
   `);
+
+  // candidate_coding_stats table (for coding analytics)
+  await ensureTable('candidate_coding_stats', `
+    CREATE TABLE candidate_coding_stats (
+      id CHAR(36) PRIMARY KEY,
+      candidateId VARCHAR(36) NOT NULL,
+      codingQuestionId VARCHAR(36) NOT NULL,
+      passedCount INT NOT NULL DEFAULT 0,
+      failedCount INT NOT NULL DEFAULT 0,
+      updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      KEY idx_candidateId (candidateId),
+      KEY idx_codingQuestionId (codingQuestionId)
+    )
+  `);
   // Add more ensureTable calls for other required tables here if needed
 }
 

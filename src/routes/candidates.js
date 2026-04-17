@@ -1179,7 +1179,7 @@ router.get('/coding-analytics/:candidateId', authMiddleware, async (req, res) =>
     return res.status(200).json({ success: true, data: rows });
   } catch (err) {
     console.error('coding-analytics error:', err);
-    return res.status(500).json({ success: false, message: 'Failed to fetch coding analytics' });
+    return res.status(500).json({ success: false, message: 'Failed to fetch coding analytics', error: err.message, stack: err.stack });
   }
 });
 
