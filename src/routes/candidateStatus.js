@@ -22,7 +22,7 @@ router.put('/position/:positionId/candidate/:candidateId', tenantMiddleware, asy
     try {
         const [tables] = await pool.query(
             `SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES 
-             WHERE TABLE_SCHEMA = ? AND TABLE_NAME IN ('candidate_positions', 'position_candidates', 'job_candidates')`,
+             WHERE TABLE_SCHEMA = ? AND TABLE_NAME IN ('candidate_positions', 'position_candidates', 'job_candidates', 'ats_candidates')`,
             [tenantDb]
         );
         const existingTables = (tables || []).map(t => t.TABLE_NAME);
@@ -66,6 +66,17 @@ router.put('/position/:positionId/candidate/:candidateId', tenantMiddleware, asy
             if (result.affectedRows > 0) updated = true;
         }
 
+        if (!updated && existingTables.includes('ats_candidates')) {
+            const [result] = await pool.query(
+                `UPDATE \`${tenantDb}\`.ats_candidates 
+                 SET stage = ?, updated_at = NOW() 
+                 WHERE job_id = UNHEX(?) AND id = UNHEX(?)`,
+                [status, posIdHex, candIdHex]
+            );
+            console.log(`[CandidateStatus] ats_candidates update: matched=${result.affectedRows}, changed=${result.changedRows || 0}`);
+            if (result.affectedRows > 0) updated = true;
+        }
+
         // 3. Update the overall status in the college_candidates table
         // We try both the tenant DB and the global candidates_db to ensure sync
         const updateOverallQuery = `UPDATE \`${tenantDb}\`.college_candidates SET status = ?, updated_at = NOW() WHERE candidate_id = ?`;
@@ -82,6 +93,21 @@ router.put('/position/:positionId/candidate/:candidateId', tenantMiddleware, asy
         if (status === 'TEST_COMPLETED') {
             const updateSummaryQuery = `UPDATE \`${DB_NAME}\`.assessments_summary SET isAssessmentCompleted = 1 WHERE candidateId = ? AND positionId = ?`;
             await pool.query(updateSummaryQuery, [candidateId, positionId]).catch(() => {});
+
+            // 5. Trigger background report generation in StreamingAi
+            const axios = require('axios');
+            const streamingAiUrl = (process.env.STREAMING_AI_URL || 'https://streamingai.onrender.com').replace(/\/$/, '');
+            const reportPayload = {
+                positionId,
+                candidateId,
+                clientId: req.headers['x-client-id'] || '', // Admin might pass this or we might need to resolve it
+                tenantId: tenantDb
+            };
+
+            console.log(`[CandidateStatus] Triggering background report generation at ${streamingAiUrl}/report/generate`);
+            axios.post(`${streamingAiUrl}/report/generate`, reportPayload)
+                .then(r => console.log(`[CandidateStatus] Report generation triggered: ${r.status}`))
+                .catch(err => console.error(`[CandidateStatus] Report trigger failed: ${err.message}`));
         }
 
         return res.status(200).json({
