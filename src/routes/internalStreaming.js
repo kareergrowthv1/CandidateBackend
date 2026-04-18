@@ -29,7 +29,12 @@ function verifyServiceToken(req, res, next) {
 
 router.use(verifyServiceToken);
 
-// GET /internal/streaming/report-document?positionId=&candidateId=&clientId=
+const normalizeId = (id) => String(id || '').toLowerCase().replace(/-/g, '');
+
+/**
+ * GET /internal/streaming/report-document?positionId=&candidateId=&clientId=
+ * Returns the report document from MongoDB. Handles both hyphenated and non-hyphenated UUID formats.
+ */
 router.get('/report-document', async (req, res) => {
   const { positionId, candidateId, clientId } = req.query;
 
@@ -39,27 +44,59 @@ router.get('/report-document', async (req, res) => {
 
   try {
     const col = await getCollection(COLLECTIONS.ASSESSMENT_REPORTS);
-    const query = { positionId: String(positionId), candidateId: String(candidateId) };
-    if (clientId) query.clientId = String(clientId);
+    
+    // Normalize IDs for comparison to handle format discrepancies
+    const posNorm = normalizeId(positionId);
+    const candNorm = normalizeId(candidateId);
+    const posRaw = String(positionId);
+    const candRaw = String(candidateId);
 
-    let doc = await col.findOne(query, { projection: { _id: 0 } });
-    if (!doc && clientId) {
-      doc = await col.findOne(
-        { positionId: String(positionId), candidateId: String(candidateId) },
-        { projection: { _id: 0 } }
-      );
+    // Broad query targeting common UUID string variations
+    const idQuery = {
+      positionId: { $in: [posRaw, posNorm] },
+      candidateId: { $in: [candRaw, candNorm] }
+    };
+
+    // 1. Precise match: IDs + Provided ClientId
+    if (clientId) {
+      const doc = await col.findOne({ ...idQuery, clientId: String(clientId) }, { projection: { _id: 0 } });
+      if (doc) return res.status(200).json({ success: true, data: doc });
     }
 
-    if (!doc) {
-      return res.status(404).json({ success: false, message: 'Report not found' });
-    }
+    // 2. Fallback: IDs + Shared/Empty ClientId (common for candidate-triggered reports)
+    const docFallback = await col.findOne(
+      { 
+        ...idQuery, 
+        $or: [
+          { clientId: '' }, 
+          { clientId: null }, 
+          { clientId: { $exists: false } }
+        ] 
+      },
+      { projection: { _id: 0 } }
+    );
+    if (docFallback) return res.status(200).json({ success: true, data: docFallback });
 
-    return res.status(200).json({ success: true, data: doc });
+    // 3. Last fallback: Fetch ANY match for these IDs regardless of clientId
+    const docAny = await col.findOne(idQuery, { projection: { _id: 0 } });
+    if (docAny) return res.status(200).json({ success: true, data: docAny });
+
+    return res.status(404).json({ 
+      success: false, 
+      message: 'Report not found in MongoDB',
+      _diag: {
+        posRaw, posNorm, candRaw, candNorm, clientId,
+        searchedAt: new Date().toISOString(),
+        v: 'v2-hyphen-agnostic'
+      }
+    });
   } catch (err) {
     console.error('[internal/streaming/report-document][GET]', err);
     return res.status(500).json({ success: false, message: err.message || 'Failed to fetch report' });
   }
 });
+
+
 
 async function upsertReportDocument(res, payload, mode = 'replace') {
   const { positionId, candidateId } = payload || {};
@@ -70,29 +107,31 @@ async function upsertReportDocument(res, payload, mode = 'replace') {
 
   try {
     const col = await getCollection(COLLECTIONS.ASSESSMENT_REPORTS);
-    const filter = { positionId: String(positionId), candidateId: String(candidateId) };
+    
+    // Normalize IDs for filtering to handle format discrepancies (stripping hyphens)
+    const posNorm = normalizeId(positionId);
+    const candNorm = normalizeId(candidateId);
+
+    // Primary filter uses normalized IDs to prevent duplicates if format changes
+    const filter = { positionId: posNorm, candidateId: candNorm };
 
     const nowIso = new Date().toISOString();
     const baseUpdate = {
       ...payload,
-      positionId: String(positionId),
-      candidateId: String(candidateId),
+      positionId: posNorm,
+      candidateId: candNorm,
       updatedAt: nowIso,
     };
 
-    if (mode === 'patch') {
-      await col.updateOne(
-        filter,
-        { $set: baseUpdate, $setOnInsert: { createdAt: nowIso } },
-        { upsert: true }
-      );
-    } else {
-      await col.updateOne(
-        filter,
-        { $set: baseUpdate, $setOnInsert: { createdAt: nowIso } },
-        { upsert: true }
-      );
-    }
+    // Add original IDs as metadata if they differ from normalized
+    if (String(positionId) !== posNorm) baseUpdate.positionId_raw = String(positionId);
+    if (String(candidateId) !== candNorm) baseUpdate.candidateId_raw = String(candidateId);
+
+    await col.updateOne(
+      filter,
+      { $set: baseUpdate, $setOnInsert: { createdAt: nowIso } },
+      { upsert: true }
+    );
 
     const saved = await col.findOne(filter, { projection: { _id: 0 } });
     return res.status(200).json({ success: true, data: saved });
@@ -101,6 +140,7 @@ async function upsertReportDocument(res, payload, mode = 'replace') {
     return res.status(500).json({ success: false, message: err.message || 'Failed to upsert report' });
   }
 }
+
 
 router.post('/report-document', async (req, res) => upsertReportDocument(res, req.body, 'replace'));
 router.put('/report-document', async (req, res) => upsertReportDocument(res, req.body, 'replace'));
