@@ -92,23 +92,47 @@ router.put('/position/:positionId/candidate/:candidateId', tenantMiddleware, asy
         // 4. Update assessment summary completion flag if status is TEST_COMPLETED
         if (status === 'TEST_COMPLETED') {
             const updateSummaryQuery = `UPDATE \`${DB_NAME}\`.assessments_summary SET isAssessmentCompleted = 1 WHERE candidateId = ? AND positionId = ?`;
-            await pool.query(updateSummaryQuery, [candidateId, positionId]).catch(() => {});
+            await pool.query(updateSummaryQuery, [candidateId, positionId]).catch(() => { });
 
             // 5. Trigger background report generation in StreamingAi
             const axios = require('axios');
             const streamingAiUrl = (process.env.STREAMING_AI_URL || 'https://streamingai.onrender.com').replace(/\/$/, '');
+            
+            // Try to resolve questionSetId and clientId from the assessment summary table
+            let questionSetId = '';
+            let resolvedClientId = req.headers['x-client-id'] || tenantDb || '';
+            
+            try {
+                const [summaryRows] = await pool.query(
+                    `SELECT question_id, BIN_TO_UUID(question_id) as questionSetId 
+                     FROM \`${DB_NAME}\`.assessments_summary 
+                     WHERE candidateId = ? AND positionId = ? LIMIT 1`,
+                    [candidateId, positionId]
+                );
+                if (summaryRows && summaryRows[0]) {
+                    questionSetId = summaryRows[0].questionSetId || '';
+                }
+            } catch (sumErr) {
+                console.warn(`[CandidateStatus] Could not fetch questionSetId for trigger: ${sumErr.message}`);
+            }
+
             const reportPayload = {
                 positionId,
                 candidateId,
-                clientId: req.headers['x-client-id'] || '', // Admin might pass this or we might need to resolve it
-                tenantId: tenantDb
+                clientId: resolvedClientId,
+                tenantId: tenantDb,
+                questionSetId: questionSetId
             };
 
-            console.log(`[CandidateStatus] Triggering background report generation at ${streamingAiUrl}/report/generate`);
+            console.log(`[CandidateStatus] Triggering background report generation at ${streamingAiUrl}/report/generate (clientId: ${resolvedClientId}, questionSetId: ${questionSetId})`);
             axios.post(`${streamingAiUrl}/report/generate`, reportPayload)
-                .then(r => console.log(`[CandidateStatus] Report generation triggered: ${r.status}`))
-                .catch(err => console.error(`[CandidateStatus] Report trigger failed: ${err.message}`));
+                .then(r => console.log(`[CandidateStatus] Report generation triggered successfully: ${r.status}`))
+                .catch(err => {
+                    const status = err.response ? err.response.status : 'no_response';
+                    console.error(`[CandidateStatus] Report trigger failed [${status}]: ${err.message}`);
+                });
         }
+
 
         return res.status(200).json({
             success: true,
@@ -118,9 +142,9 @@ router.put('/position/:positionId/candidate/:candidateId', tenantMiddleware, asy
 
     } catch (err) {
         console.error('Candidate status update error:', err);
-        return res.status(500).json({ 
-            success: false, 
-            message: err.message || 'Failed to update candidate status' 
+        return res.status(500).json({
+            success: false,
+            message: err.message || 'Failed to update candidate status'
         });
     }
 });
