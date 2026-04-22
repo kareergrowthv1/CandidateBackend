@@ -1,7 +1,55 @@
 const express = require('express');
+const axios = require('axios');
 const router = express.Router();
 const { pool, DB_NAME } = require('../config/db');
 const tenantMiddleware = require('../middlewares/tenant.middleware');
+
+function normalizeUrl(url) {
+    return String(url || '').trim().replace(/\/$/, '');
+}
+
+function buildStreamingAiCandidates() {
+    const fromEnv = normalizeUrl(process.env.STREAMING_AI_URL);
+    const defaults = ['http://localhost:9000', 'http://127.0.0.1:9000'];
+
+    // Keep order stable and unique.
+    const merged = [fromEnv, ...defaults].filter(Boolean);
+    return [...new Set(merged)];
+}
+
+async function triggerReportGenerationWithFallback(reportPayload) {
+    const serviceToken = (process.env.INTERNAL_SERVICE_TOKEN || '').trim();
+    const headers = { 'Content-Type': 'application/json' };
+    if (serviceToken) headers['X-Service-Token'] = serviceToken;
+
+    const candidates = buildStreamingAiCandidates();
+    let lastErr = null;
+
+    for (const baseUrl of candidates) {
+        const endpoint = `${baseUrl}/report/generate`;
+        try {
+            console.log(`[CandidateStatus] Triggering background report generation at ${endpoint}`);
+            const resp = await axios.post(endpoint, reportPayload, {
+                headers,
+                timeout: 12000,
+                validateStatus: () => true,
+            });
+
+            if (resp.status >= 200 && resp.status < 300) {
+                console.log(`[CandidateStatus] Report generation trigger accepted by ${baseUrl}: ${resp.status}`);
+                return;
+            }
+
+            lastErr = new Error(`HTTP ${resp.status} from ${baseUrl}: ${resp.data?.message || 'Unknown error'}`);
+            console.warn(`[CandidateStatus] Report trigger rejected by ${baseUrl}: ${resp.status}`);
+        } catch (err) {
+            lastErr = err;
+            console.warn(`[CandidateStatus] Report trigger failed at ${baseUrl}: ${err.message}`);
+        }
+    }
+
+    throw lastErr || new Error('All Streaming AI trigger endpoints failed');
+}
 
 /**
  * PUT /candidate-status/position/:positionId/candidate/:candidateId
@@ -95,9 +143,6 @@ router.put('/position/:positionId/candidate/:candidateId', tenantMiddleware, asy
             await pool.query(updateSummaryQuery, [candidateId, positionId]).catch(() => { });
 
             // 5. Trigger background report generation in StreamingAi
-            const axios = require('axios');
-            const streamingAiUrl = (process.env.STREAMING_AI_URL || 'https://streamingai.onrender.com').replace(/\/$/, '');
-            
             // Try to resolve questionSetId and clientId from the assessment summary table
             let questionSetId = '';
             let resolvedClientId = req.headers['x-client-id'] || tenantDb || '';
@@ -124,9 +169,8 @@ router.put('/position/:positionId/candidate/:candidateId', tenantMiddleware, asy
                 questionSetId: questionSetId
             };
 
-            console.log(`[CandidateStatus] Triggering background report generation at ${streamingAiUrl}/report/generate (clientId: ${resolvedClientId}, questionSetId: ${questionSetId})`);
-            axios.post(`${streamingAiUrl}/report/generate`, reportPayload)
-                .then(r => console.log(`[CandidateStatus] Report generation triggered successfully: ${r.status}`))
+            triggerReportGenerationWithFallback(reportPayload)
+                .then(() => console.log(`[CandidateStatus] Report generation trigger dispatched (clientId: ${resolvedClientId}, questionSetId: ${questionSetId})`))
                 .catch(err => {
                     const status = err.response ? err.response.status : 'no_response';
                     console.error(`[CandidateStatus] Report trigger failed [${status}]: ${err.message}`);
