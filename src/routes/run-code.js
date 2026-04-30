@@ -2,13 +2,15 @@
  * Run code via Judge0 (RapidAPI) for CandidateFrontend Practice.
  * Wraps user code in language-specific boilerplate that reads test input from stdin,
  * calls the user's function with those args, and prints the result.
- * Requires JUDGE0_RAPIDAPI_KEY in .env.
+ * Judge0 API key is loaded from superadmin_db.settings (key: judge0Settings).
  */
 const express = require('express');
 const router = express.Router();
 const { getBoilerplateByLanguage, toSnakeCase } = require('../lib/boilerplate');
+const { pool } = require('../config/db');
 
-const JUDGE0_BASE = 'https://judge0-ce.p.rapidapi.com';
+const JUDGE0_SETTINGS_KEY = 'judge0Settings';
+const JUDGE0_CACHE_TTL_MS = 60 * 1000;
 const LANGUAGE_IDS = {
   javascript: 63,
   js: 63,
@@ -16,6 +18,70 @@ const LANGUAGE_IDS = {
   python3: 71,
   java: 62,
 };
+
+let judge0Cache = {
+  fetchedAt: 0,
+  config: null,
+};
+
+function parseJudge0ConfigValue(rawValue) {
+  if (!rawValue) return null;
+  try {
+    const parsed = typeof rawValue === 'string' ? JSON.parse(rawValue) : rawValue;
+    if (!parsed) return null;
+    if (typeof parsed !== 'object') return null;
+
+    const apiKeyCandidate = [parsed.apiKey, parsed.rapidApiKey].find(
+      (v) => typeof v === 'string' && v.trim().length > 0
+    );
+    const apiKey = String(apiKeyCandidate ?? '').trim();
+    const baseUrl = String(parsed.baseUrl ?? '').trim().replace(/\/+$/, '');
+    let apiHost = String(parsed.apiHost ?? '').trim();
+    if (!apiHost && baseUrl) {
+      try {
+        apiHost = new URL(baseUrl).host;
+      } catch (_) {
+        apiHost = '';
+      }
+    }
+    if ([apiKey, baseUrl, apiHost].some((v) => !v)) return null;
+    return { apiKey, baseUrl, apiHost };
+  } catch (_) {
+    return null;
+  }
+}
+
+async function getJudge0Config() {
+  const now = Date.now();
+  if (judge0Cache.config && (now - judge0Cache.fetchedAt) < JUDGE0_CACHE_TTL_MS) {
+    return judge0Cache.config;
+  }
+
+  let dbConfig = null;
+  try {
+    const [rows] = await pool.query(
+      'SELECT `value` FROM superadmin_db.settings WHERE `key` = ? LIMIT 1',
+      [JUDGE0_SETTINGS_KEY]
+    );
+    if (rows.length > 0) {
+      dbConfig = parseJudge0ConfigValue(rows[0].value);
+    }
+  } catch (err) {
+    console.warn('[run-code] Failed to load Judge0 config from DB:', err.message);
+  }
+
+  const config = {
+    apiKey: dbConfig?.apiKey ?? '',
+    baseUrl: dbConfig?.baseUrl ?? '',
+    apiHost: dbConfig?.apiHost ?? '',
+  };
+
+  judge0Cache = {
+    fetchedAt: now,
+    config,
+  };
+  return config;
+}
 
 function getLanguageId(lang) {
   const key = (lang || '').toLowerCase().trim();
@@ -243,9 +309,12 @@ function base64Decode(str) {
 }
 
 /** Submit once to Judge0 and poll until done; returns { stdout, stderr, statusId, statusDesc, time, memory } or throws. */
-async function submitAndWait({ sourceCode, languageId, stdin, timeoutSeconds }) {
-  const key = process.env.JUDGE0_RAPIDAPI_KEY;
+async function submitAndWait({ sourceCode, languageId, stdin, timeoutSeconds, judge0Config }) {
+  const key = judge0Config?.apiKey;
   if (!key) throw new Error('Judge0 API key not configured');
+  const baseUrl = judge0Config?.baseUrl;
+  const apiHost = judge0Config?.apiHost;
+  if (!baseUrl || !apiHost) throw new Error('Judge0 base URL/host not configured');
 
   const payload = {
     language_id: languageId,
@@ -253,11 +322,11 @@ async function submitAndWait({ sourceCode, languageId, stdin, timeoutSeconds }) 
     stdin: base64Encode(stdin || ''),
   };
 
-  const subRes = await fetch(`${JUDGE0_BASE}/submissions?base64_encoded=true&wait=false&fields=*`, {
+  const subRes = await fetch(`${baseUrl}/submissions?base64_encoded=true&wait=false&fields=*`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-rapidapi-host': 'judge0-ce.p.rapidapi.com',
+      'x-rapidapi-host': apiHost,
       'x-rapidapi-key': key,
     },
     body: JSON.stringify(payload),
@@ -276,9 +345,9 @@ async function submitAndWait({ sourceCode, languageId, stdin, timeoutSeconds }) 
   let data;
   while (Date.now() < deadline) {
     await new Promise((r) => setTimeout(r, 1000));
-    const res = await fetch(`${JUDGE0_BASE}/submissions/${token}?base64_encoded=true&fields=*`, {
+    const res = await fetch(`${baseUrl}/submissions/${token}?base64_encoded=true&fields=*`, {
       headers: {
-        'x-rapidapi-host': 'judge0-ce.p.rapidapi.com',
+        'x-rapidapi-host': apiHost,
         'x-rapidapi-key': key,
       },
     });
@@ -299,8 +368,8 @@ async function submitAndWait({ sourceCode, languageId, stdin, timeoutSeconds }) 
 }
 
 /** Run all test cases in one Judge0 submission: combined stdin (one line per test), parse stdout to one result per test. */
-async function runAllTestCasesInOneSubmission({ sourceCode, languageId, testCases, timeoutSeconds }) {
-  const key = process.env.JUDGE0_RAPIDAPI_KEY;
+async function runAllTestCasesInOneSubmission({ sourceCode, languageId, testCases, timeoutSeconds, judge0Config }) {
+  const key = judge0Config?.apiKey;
   if (!key) {
     return testCases.map((tc, i) => ({
       testCaseId: tc.testCaseId || `tc-${i}`,
@@ -326,6 +395,7 @@ async function runAllTestCasesInOneSubmission({ sourceCode, languageId, testCase
       languageId,
       stdin: combinedStdin,
       timeoutSeconds,
+      judge0Config,
     });
 
     const lines = (stdout || '').split(/\r?\n/).map((s) => s.trim());
@@ -381,16 +451,16 @@ const authMiddleware = require('../middlewares/auth.middleware');
  */
 router.post('/', authMiddleware, async (req, res) => {
   try {
-    const { sourceCode, language, testCases, timeoutSeconds = 10, functionName, functionSignature, boilerplateByLanguage, rawCode } = req.body || {};
+    const { sourceCode, language, testCases, timeoutSeconds = 10, functionName, functionSignature, boilerplateByLanguage, rawCode } = req.body ?? {};
     if (!sourceCode || typeof sourceCode !== 'string') {
       return res.status(400).json({ success: false, message: 'sourceCode is required' });
     }
 
-    const key = process.env.JUDGE0_RAPIDAPI_KEY;
-    if (!key) {
+    const judge0Config = await getJudge0Config();
+    if ([judge0Config?.apiKey, judge0Config?.baseUrl, judge0Config?.apiHost].some((v) => !v)) {
       return res.status(503).json({
         success: false,
-        message: 'Judge0 API key not configured. Set JUDGE0_RAPIDAPI_KEY in environment.',
+        message: 'Judge0 settings are incomplete. Configure apiKey/baseUrl/apiHost in Superadmin > Settings > Judge0.',
       });
     }
 
@@ -408,6 +478,7 @@ router.post('/', authMiddleware, async (req, res) => {
         languageId,
         stdin: (Array.isArray(testCases) && testCases.length > 0) ? (testCases[0].input || '') : '',
         timeoutSeconds,
+        judge0Config,
       });
 
       return res.status(200).json({
@@ -437,6 +508,7 @@ router.post('/', authMiddleware, async (req, res) => {
       languageId,
       testCases,
       timeoutSeconds,
+      judge0Config,
     });
 
     return res.status(200).json({
