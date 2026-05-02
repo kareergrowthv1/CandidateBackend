@@ -2,15 +2,14 @@
  * Run code via Judge0 (RapidAPI) for CandidateFrontend Practice.
  * Wraps user code in language-specific boilerplate that reads test input from stdin,
  * calls the user's function with those args, and prints the result.
- * Judge0 API key is loaded from superadmin_db.settings (key: judge0Settings).
+ * Judge0 settings are loaded dynamically from SuperadminBackend API.
  */
 const express = require('express');
 const router = express.Router();
 const { getBoilerplateByLanguage, toSnakeCase } = require('../lib/boilerplate');
-const { pool } = require('../config/db');
 
-const JUDGE0_SETTINGS_KEY = 'judge0Settings';
 const JUDGE0_CACHE_TTL_MS = 60 * 1000;
+const SUPERADMIN_SETTINGS_ENDPOINT = '/superadmin/settings/judge0';
 const LANGUAGE_IDS = {
   javascript: 63,
   js: 63,
@@ -36,44 +35,51 @@ function parseJudge0ConfigValue(rawValue) {
     );
     const apiKey = String(apiKeyCandidate ?? '').trim();
     const baseUrl = String(parsed.baseUrl ?? '').trim().replace(/\/+$/, '');
-    let apiHost = String(parsed.apiHost ?? '').trim();
-    if (!apiHost && baseUrl) {
-      try {
-        apiHost = new URL(baseUrl).host;
-      } catch (_) {
-        apiHost = '';
-      }
-    }
-    if ([apiKey, baseUrl, apiHost].some((v) => !v)) return null;
-    return { apiKey, baseUrl, apiHost };
+    if ([apiKey, baseUrl].some((v) => !v)) return null;
+    return { apiKey, baseUrl };
   } catch (_) {
     return null;
   }
 }
 
-async function getJudge0Config() {
+async function getJudge0Config(req) {
   const now = Date.now();
   if (judge0Cache.config && (now - judge0Cache.fetchedAt) < JUDGE0_CACHE_TTL_MS) {
     return judge0Cache.config;
   }
 
-  let dbConfig = null;
+  const base = String(process.env.SUPERADMIN_BACKEND_URL || '').trim().replace(/\/+$/, '');
+  let apiConfig = null;
   try {
-    const [rows] = await pool.query(
-      'SELECT `value` FROM superadmin_db.settings WHERE `key` = ? LIMIT 1',
-      [JUDGE0_SETTINGS_KEY]
-    );
-    if (rows.length > 0) {
-      dbConfig = parseJudge0ConfigValue(rows[0].value);
+    if (base) {
+      const headers = {
+        Accept: 'application/json',
+        'X-Service-Name': 'candidate-backend',
+      };
+      const serviceToken = String(process.env.SUPERADMIN_SERVICE_TOKEN || process.env.INTERNAL_SERVICE_TOKEN || '').trim();
+      if (serviceToken) headers['X-Service-Token'] = serviceToken;
+      if (req?.headers?.authorization) headers.Authorization = req.headers.authorization;
+
+      const response = await fetch(`${base}${SUPERADMIN_SETTINGS_ENDPOINT}`, {
+        method: 'GET',
+        headers,
+      });
+
+      if (response.ok) {
+        const payload = await response.json();
+        apiConfig = parseJudge0ConfigValue(payload?.data ?? null);
+      } else {
+        const errTxt = await response.text();
+        console.warn('[run-code] Judge0 config API failed:', response.status, errTxt);
+      }
     }
   } catch (err) {
-    console.warn('[run-code] Failed to load Judge0 config from DB:', err.message);
+    console.warn('[run-code] Failed to load Judge0 config from API:', err.message);
   }
 
   const config = {
-    apiKey: dbConfig?.apiKey ?? '',
-    baseUrl: dbConfig?.baseUrl ?? '',
-    apiHost: dbConfig?.apiHost ?? '',
+    apiKey: apiConfig?.apiKey ?? '',
+    baseUrl: apiConfig?.baseUrl ?? '',
   };
 
   judge0Cache = {
@@ -313,8 +319,15 @@ async function submitAndWait({ sourceCode, languageId, stdin, timeoutSeconds, ju
   const key = judge0Config?.apiKey;
   if (!key) throw new Error('Judge0 API key not configured');
   const baseUrl = judge0Config?.baseUrl;
-  const apiHost = judge0Config?.apiHost;
-  if (!baseUrl || !apiHost) throw new Error('Judge0 base URL/host not configured');
+  if (!baseUrl) throw new Error('Judge0 base URL not configured');
+
+  let apiHost = '';
+  try {
+    apiHost = new URL(baseUrl).host;
+  } catch (_) {
+    apiHost = '';
+  }
+  if (!apiHost) throw new Error('Judge0 base URL is invalid');
 
   const payload = {
     language_id: languageId,
@@ -456,11 +469,11 @@ router.post('/', authMiddleware, async (req, res) => {
       return res.status(400).json({ success: false, message: 'sourceCode is required' });
     }
 
-    const judge0Config = await getJudge0Config();
-    if ([judge0Config?.apiKey, judge0Config?.baseUrl, judge0Config?.apiHost].some((v) => !v)) {
+    const judge0Config = await getJudge0Config(req);
+    if ([judge0Config?.apiKey, judge0Config?.baseUrl].some((v) => !v)) {
       return res.status(503).json({
         success: false,
-        message: 'Judge0 settings are incomplete. Configure apiKey/baseUrl/apiHost in Superadmin > Settings > Judge0.',
+        message: 'Judge0 settings are incomplete. Configure apiKey/baseUrl in Superadmin > Settings > Judge0.',
       });
     }
 
